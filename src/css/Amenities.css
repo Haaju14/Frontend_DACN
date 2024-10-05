@@ -1,0 +1,26 @@
+.amenities {
+  font-family: Arial, sans-serif;
+}
+
+.amenities-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}

@@ -1,0 +1,42 @@
+/* UserMenu.css */
+.userMenu .container {
+  position: relative;
+  display: inline-block;
+}
+
+.userMenu .user-icon-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.userMenu .popup-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  z-index: 1;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.userMenu .popup-menu.show {
+  display: block;
+}
+
+.userMenu .menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.userMenu .menu-item:hover {
+  background-color: #f0f0f0;
+}
