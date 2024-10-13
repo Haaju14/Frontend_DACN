@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { convertDateAndTime } from "../../../util/utilMethod";
 import { showNotification } from "../../../redux/reducers/notificationReducer";
-import { Modal } from "antd";
+import { DatePicker, Modal } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import { roomApi } from "../../../service/room/roomApi";
 import useRoute from "../../../hook/useRoute";
@@ -53,7 +53,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
     if (userLogin) {
       setIsModalOpen(true);
     } else {
-      dispatch(showNotification("Please login to book room"));
+      dispatch(showNotification("Please login to buy course"));
     }
   };
 
@@ -119,60 +119,44 @@ const BookingCard: React.FC<BookingCardProps> = ({
   return (
     <div className="booking-card">
       <div className="price-rating">
-        <span className="price">{price}/ night</span>
+        <span className="price">{price}$</span>
         <span className="rating">
-          <span className="rating-value">{totalStars}</span>
+          <span className="rating-value">{totalStars}♥ </span>
           <span className="rating-count">({totalComment} comment)</span>
         </span>
       </div>
-      <div className="dates-guests">
-        <div className="date-picker">
-          <span>Check-in Date</span>
-          <span>{formatDate(startDate)}</span>
-        </div>
-        <div className="date-picker">
-          <span>Check-out Date</span>
-          <span>{formatDate(endDate)}</span>
-        </div>
-        <div className="guests-picker">
-          <span>Guest</span>
-          <div className="guests-controls">
-            <button onClick={decrementGuests}>-</button>
-            <span style={{ paddingTop: "10px" }}>{guests} guest</span>
-            <button onClick={incrementGuests}>+</button>
-          </div>
-        </div>
-      </div>
+      
       <button className="book-button" onClick={handleBooking}>
-        Book room
+        Buy Course
       </button>
       <Modal
-        title={`Are you sure you want to book the ${roomData.tenPhong} room?`}
+        title={`Are you sure you want to buy this Course? `}      
         open={isModalOpen}
-        onOk={handleOk}
+        onOk={handleOk} 
         onCancel={handleCancel}
       >
         <p>
-          Date booked: {formatDate(startDate)} - {formatDate(endDate)}
+          {roomData.tenPhong}
         </p>
-        <p>Accommodations: {guests}</p>
+        <p>
+          Date buy: {formatDate(startDate)} 
+        </p>
+        <p>
+          Course Price: {price}$
+        </p>
       </Modal>
-      <p className="note">You have not been charged yet</p>
       <div className="cost-breakdown">
-        <div className="cost-item">
-          <span>
-            {price} X {days} nights
-          </span>
-          <span>{price * days}</span>
-        </div>
-        <div className="cost-item">
-          <span>Cleaning fee</span>
-          <span>8</span>
-        </div>
+
         <div className="total-cost">
-          <span>Total before taxes</span>
-          <span>{price * days * 8}</span>
+          <span>Price before Voucher:</span>
+          <span>{price  }$</span>
         </div>
+        
+        <div className="total-cost">
+          <span>Price after Voucher:</span>
+          <span>{price  * 0.8}$</span>
+        </div>
+
       </div>
     </div>
   );

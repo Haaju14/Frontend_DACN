@@ -41,8 +41,8 @@ const RangeSliderComponent: React.FC<{
           type="number"
           value={minValue}
           min={0}
-          max={120000}
-          step={500}
+          max={100}
+          step={1}
           onChange={handleMinNumberChange}
         />
         -
@@ -50,8 +50,8 @@ const RangeSliderComponent: React.FC<{
           type="number"
           value={maxValue}
           min={0}
-          max={120000}
-          step={500}
+          max={100}
+          step={1}
           onChange={handleMaxNumberChange}
         />
       </div>
@@ -60,16 +60,16 @@ const RangeSliderComponent: React.FC<{
           type="range"
           value={minValue}
           min={0}
-          max={120000}
-          step={500}
+          max={100}
+          step={1}
           onChange={handleMinRangeChange}
         />
         <input
           type="range"
           value={maxValue}
           min={0}
-          max={120000}
-          step={500}
+          max={100}
+          step={1}
           onChange={handleMaxRangeChange}
         />
       </div>

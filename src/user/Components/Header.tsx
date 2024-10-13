@@ -2,6 +2,7 @@ import React from "react";
 import Login from "./Login";
 import Register from "./Register";
 import UserMenu from "./UserMenu";
+import { NavLink } from "react-router-dom";
 
 const Header: React.FC = () => {
   return (
@@ -11,9 +12,9 @@ const Header: React.FC = () => {
         id="ftco-navbar"
       >
         <div className="container">
-          <a className="navbar-brand" href="/">
-            AirBnB
-          </a>
+          <NavLink className="navbar-brand" to="/">
+            H&H
+          </NavLink> 
           <button
             className="navbar-toggler"
             type="button"

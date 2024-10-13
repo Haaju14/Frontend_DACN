@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const RoomsNav: React.FC = () => {
   return (
@@ -13,10 +14,10 @@ const RoomsNav: React.FC = () => {
             <div className="text">
               <p className="breadcrumbs mb-2">
                 <span className="mr-2">
-                  <a href="index.html">Home</a>
+                  <NavLink to="/">Home</NavLink>
                 </span>
               </p>
-              <h1 className="mb-4 bread">Rooms</h1>
+              <h1 className="mb-4 bread">Courses</h1>
             </div>
           </div>
         </div>

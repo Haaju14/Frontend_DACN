@@ -50,30 +50,30 @@ const SectionNumber: React.FC = () => {
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={50000}>
+                    <strong className="number counter" data-number={6189}>
                       {countUser}
                     </strong>
-                    <span>Guests</span>
+                    <span>Students</span>
                   </div>
                 </div>
               </div>
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={3000}>
+                    <strong className="number counter" data-number={875}>
                       {countRoom}
                     </strong>
-                    <span>Rooms</span>
+                    <span>Course</span>
                   </div>
                 </div>
               </div>
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={1000}>
+                    <strong className="number counter" data-number={285}>
                       {countAdmin}
                     </strong>
-                    <span>Staffs</span>
+                    <span>Teacher</span>
                   </div>
                 </div>
               </div>

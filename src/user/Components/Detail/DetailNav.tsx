@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const DetailNav: React.FC = () => {
   return (
@@ -16,14 +17,14 @@ const DetailNav: React.FC = () => {
                 data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"
               >
                 <span className="mr-2">
-                  <a href="index.html">Home</a>
+                  <NavLink to="/">Home</NavLink>
                 </span>{" "}
                 <span className="mr-2">
-                  <a href="rooms.html">Room</a>
+                  <NavLink to="/room">Course</NavLink>
                 </span>{" "}
-                <span>Room Detail</span>
+                <span>Course Detail</span>
               </p>
-              <h1 className="mb-4 bread">Room Detail</h1>
+              <h1 className="mb-4 bread">Course Detail</h1>
             </div>
           </div>
         </div>

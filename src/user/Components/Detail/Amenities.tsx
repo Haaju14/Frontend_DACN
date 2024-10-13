@@ -10,7 +10,7 @@ const Amenities: React.FC = () => {
 
   return (
     <div className="amenities">
-      <h3 className="mb-4">Amenities included</h3>
+      <h3 className="mb-4">HashTag</h3>
       <div className="amenities-list">
         <div className="amenity-item">
           <span className="icon">📶</span>
@@ -42,7 +42,7 @@ const Amenities: React.FC = () => {
         )}
       </div>
       <button onClick={toggleShowMore}>
-        {showMore ? "Hide amenities" : "Show more amenities"}
+        {showMore ? "Hide HashTag" : "Show more HashTag"}
       </button>
     </div>
   );

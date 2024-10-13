@@ -4,6 +4,7 @@ import { roomApi } from "../../../service/room/roomApi";
 import Loading from "../Antd/Loading";
 import { RoomData, LocateError } from "../../../Model/Model";
 import useRoute from "../../../hook/useRoute";
+import { NavLink } from "react-router-dom";
 
 const SectionOurRoom: React.FC = () => {
   const { navigate } = useRoute();
@@ -30,7 +31,7 @@ const SectionOurRoom: React.FC = () => {
       <div className="container">
         <div className="row justify-content-center mb-5 pb-3">
           <div className="col-md-7 heading-section text-center ftco-animate">
-            <h2 className="mb-4">Our Rooms</h2>
+            <h2 className="mb-4">Our Course</h2>
           </div>
         </div>
         <div className="row">
@@ -40,29 +41,29 @@ const SectionOurRoom: React.FC = () => {
               className="col-sm col-md-6 col-lg-4 ftco-animate"
             >
               <div className="room">
-                <a
+                <NavLink
+                  to={`/detail/${room.id}`}
                   className="img d-flex justify-content-center align-items-center"
-                  style={{ backgroundImage: `url(${room.hinhAnh})` }}
-                  onClick={() => {
-                    navigate(`/detail/${room.id}`);
-                  }}
+                  style={{ backgroundImage: `url(${room.hinhAnh})` }}                  
                 >
                   <div className="icon d-flex justify-content-center align-items-center">
                     <span className="icon-search2" />
                   </div>
-                </a>
+                </NavLink>                
                 <div className="text p-3 text-center">
                   <h3 className="mb-3 truncated-title">
-                    <a href="rooms.html">{room.tenPhong}</a>
+                    <NavLink
+                      to={`/detail/${room.id}`}> {room.tenPhong}
+                    </NavLink>
                   </h3>
                   <p>
                     <span className="price mr-2">{room.giaTien}</span>
                   </p>
                   <hr />
                   <p className="pt-1 truncated-text">
-                    <a href="room-single.html" className="btn-custom">
+                    <NavLink to={`/detail/${room.id}`} className="btn-custom">
                       {room.moTa}
-                    </a>
+                    </NavLink>
                   </p>
                 </div>
               </div>

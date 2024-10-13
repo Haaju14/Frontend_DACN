@@ -12,8 +12,8 @@ const Carousel: React.FC = () => {
           <div className="row no-gutters slider-text align-items-center justify-content-center">
             <div className="col-md-12 ftco-animate text-center">
               <div className="text mb-5 pb-3">
-                <h1 className="mb-3">Welcome To AIRBNB</h1>
-                <h2>Hotels &amp; Resorts</h2>
+                <h1 className="mb-3">Welcome To H&H</h1>
+                <h2>Online Courses</h2>
               </div>
             </div>
           </div>
@@ -28,8 +28,8 @@ const Carousel: React.FC = () => {
           <div className="row no-gutters slider-text align-items-center justify-content-center">
             <div className="col-md-12 ftco-animate text-center">
               <div className="text mb-5 pb-3">
-                <h1 className="mb-3">Enjoy A Luxury Experience</h1>
-                <h2>Join With Us</h2>
+                <h1 className="mb-3">Experience Interesting Courses</h1>
+                <h2>Join Now</h2>
               </div>
             </div>
           </div>

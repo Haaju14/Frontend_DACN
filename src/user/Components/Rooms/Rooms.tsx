@@ -113,36 +113,7 @@ const Rooms: React.FC<Props> = () => {
           <div className="col-lg-3 sidebar">
             <div className="sidebar-wrap bg-light ftco-animate">
               <form action="#">
-                <div className="fields">
-                  <div className="form-group">
-                    <label htmlFor="#">Check-in Date</label>
-                    <DatePicker
-                      selected={startDate}
-                      onChange={(date: Date | null) =>
-                        setStartDate(date ?? undefined)
-                      }
-                      selectsStart
-                      startDate={startDate}
-                      endDate={endDate}
-                      className="form-control"
-                      placeholderText="Check-in date"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="#">Check-out Date</label>
-                    <DatePicker
-                      selected={endDate}
-                      onChange={(date: Date | null) =>
-                        setEndDate(date ?? undefined)
-                      }
-                      selectsEnd
-                      startDate={startDate}
-                      endDate={endDate}
-                      minDate={startDate}
-                      className="form-control"
-                      placeholderText="Check-out date"
-                    />
-                  </div>
+                <div className="fields">                                
                   <h3 className="heading mb-4">Advanced Search</h3>
                   <div className="form-group">
                     <div className="select-wrap one-third">
@@ -165,30 +136,11 @@ const Rooms: React.FC<Props> = () => {
                       </select>
                     </div>
                   </div>
+
                   <div className="form-group">
-                    <div className="select-wrap one-third">
-                      <div className="guest-counter customer">
-                        <div
-                          className="counter-wrap"
-                          style={{ padding: "0 75px" }}
-                        >
-                          <div
-                            className="counter-button"
-                            onClick={decreaseGuests}
-                          >
-                            -
-                          </div>
-                          <span>{guests}</span>
-                          <div
-                            className="counter-button"
-                            onClick={increaseGuests}
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
+                    <div className="select-wrap one-third">                    
                     </div>
-                  </div>
+                  </div>              
                   <div className="form-group">
                     <RangeSliderComponent onChange={handlePriceRangeChange} />
                   </div>

@@ -5,6 +5,7 @@ import { DispatchType } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/reducers/userReducer";
 import useRoute from "../../hook/useRoute";
+import { NavLink } from "react-router-dom";
 
 const UserMenu: React.FC = () => {
   const { navigate } = useRoute();
@@ -45,50 +46,50 @@ const UserMenu: React.FC = () => {
       if (userLogin.user.role === "ADMIN") {
         return (
           <>
-            <a className="dropdown-item" onClick={handleManage}>
-              Manage information
-            </a>
-            <a className="dropdown-item" onClick={handleManageAdmin}>
+            <NavLink className="dropdown-item" onClick={handleManage} to={"/info-user"}>
+              Account Information
+            </NavLink>
+            <NavLink className="dropdown-item" onClick={handleManageAdmin} to={"/admin/table-user"}>
               Manage admin
-            </a>
-            <a className="dropdown-item" onClick={handleLogOut}>
+            </NavLink>
+            <NavLink className="dropdown-item" onClick={handleLogOut} to={"/"}>
               Log out
-            </a>
+            </NavLink>
           </>
         );
       } else {
         return (
           <>
-            <a className="dropdown-item" onClick={handleManage}>
-              Manage information
-            </a>
-            <a className="dropdown-item" onClick={handleLogOut}>
+            <NavLink className="dropdown-item" onClick={handleManage} to={"/info-user"}>
+            Account Information
+            </NavLink>
+            <NavLink className="dropdown-item" onClick={handleLogOut} to={"/"}>
               Log out
-            </a>
+            </NavLink>
           </>
         );
       }
     } else {
       return (
         <>
-          <a
+          <NavLink
             className="dropdown-item"
-            href="#"
+            to="#"
             data-toggle="modal"
             data-target="#authModal"
             onClick={() => handleTabSwitch("login")}
           >
             Log in
-          </a>
-          <a
+          </NavLink>
+          <NavLink
             className="dropdown-item"
-            href="#"
+            to="#"
             data-toggle="modal"
             data-target="#authModal"
             onClick={() => handleTabSwitch("register")}
           >
             Register
-          </a>
+          </NavLink>
         </>
       );
     }

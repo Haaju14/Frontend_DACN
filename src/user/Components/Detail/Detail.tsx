@@ -255,10 +255,7 @@ const Detail: React.FC = () => {
                   </ul>
                 </div>
               </div>
-              <div className="col-md-12 room-single ftco-animate mb-5 mt-4">
-                <h3 className="mb-4">The location</h3>
-                <CityMapComponent city={cities[cityIndex]} />
-              </div>
+              
               <div className="col-md-12 properties-single ftco-animate mb-5 mt-4">
                 <Amenities />
               </div>

@@ -145,7 +145,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
               />
             </div>
             <span className="update-photo" onClick={handleShowCustom}>
-              Update image
+              Change Avatar
             </span>
           </div>
           <div className="profile-verification ml-auto d-flex flex-column align-items-start">

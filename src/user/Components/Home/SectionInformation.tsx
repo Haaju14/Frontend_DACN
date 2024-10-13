@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const SectionInformation: React.FC = () => {
   return (
@@ -7,61 +8,49 @@ const SectionInformation: React.FC = () => {
         <div className="row">
           <div
             className="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center"
-            style={{ backgroundImage: "url(user/images/bg_2.jpg)" }}
+            style={{ backgroundImage: "url(user/images/MeoDaDen.jpg)" }}
           >
-            <a
-              href="https://vimeo.com/45830194"
+            <NavLink
+              to="https://vimeo.com/1018941577"
               className="icon popup-vimeo d-flex justify-content-center align-items-center"
             >
               <span className="icon-play" />
-            </a>
+            </NavLink>
           </div>
           <div className="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
             <div className="heading-section heading-section-wo-line pt-md-5 pl-md-5 mb-5">
               <div className="ml-md-0">
-                <span className="subheading">Welcome to AIRBNB</span>
-                <h2 className="mb-4">Welcome To Our AIRBNB</h2>
+                <span className="subheading">Welcome to H&H</span>
+                <h2 className="mb-4">Welcome To Our System</h2>
               </div>
             </div>
             <div className="pb-md-5">
               <p>
-                On her way she met a copy. The copy warned the Little Blind
-                Text, that where it came from it would have been rewritten a
-                thousand times and everything that was left from its origin
-                would be the word "and" and the Little Blind Text should turn
-                around and return to its own, safe country. But nothing the copy
-                said could convince her and so it didn’t take long until a few
-                insidious Copy Writers ambushed her, made her drunk with Longe
-                and Parole and dragged her into their agency, where they abused
-                her for their.
+                Hau
               </p>
               <p>
-                When she reached the first hills of the Italic Mountains, she
-                had a last view back on the skyline of her hometown
-                Bookmarksgrove, the headline of Alphabet Village and the subline
-                of her own road, the Line Lane. Pityful a rethoric question ran
-                over her cheek, then she continued her way.
+                Hung
               </p>
               <ul className="ftco-social d-flex">
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="/">
                     <span className="icon-twitter" />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="https://www.facebook.com/hau.nguyen.1410">
                     <span className="icon-facebook" />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="/">
                     <span className="icon-google-plus" />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="https://www.instagram.com/haaju14.10/">
                     <span className="icon-instagram" />
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>

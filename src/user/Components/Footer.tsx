@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
@@ -7,26 +8,25 @@ const Footer: React.FC = () => {
         <div className="row mb-5">
           <div className="col-md">
             <div className="ftco-footer-widget mb-4">
-              <h2 className="ftco-heading-2">AirBnB</h2>
+              <h2 className="ftco-heading-2">H&H</h2>
               <p>
-                Far far away, behind the word mountains, far from the countries
-                Vokalia and Consonantia, there live the blind texts.
+                text 123891273981273982173
               </p>
               <ul className="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="#">
                     <span className="icon-twitter" />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="https://www.facebook.com/hau.nguyen.1410">
                     <span className="icon-facebook" />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <a href="#">
+                  <NavLink to="https://www.instagram.com/haaju14.10/">
                     <span className="icon-instagram" />
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>

@@ -10,6 +10,7 @@ import {
 } from "../../../Model/Model";
 import "react-datepicker/dist/react-datepicker.css";
 import useRoute from "../../../hook/useRoute";
+import { NavLink } from "react-router-dom";
 
 const RoomByLocate: React.FC<LocatePriceRangeProps> = ({
   priceRange,
@@ -69,20 +70,18 @@ const RoomByLocate: React.FC<LocatePriceRangeProps> = ({
         {paginatedRooms.map((room) => (
           <div className="col-sm col-md-6 col-lg-4 ftco-animate" key={room.id}>
             <div className="room">
-              <a
+              <NavLink
+                to={`/detail/${room.id}`}
                 className="img d-flex justify-content-center align-items-center"
-                style={{ backgroundImage: `url(${room.hinhAnh})` }}
-                onClick={() => {
-                  navigate(`/detail/${room.id}`);
-                }}
+                style={{ backgroundImage: `url(${room.hinhAnh})` }}               
               >
                 <div className="icon d-flex justify-content-center align-items-center">
                   <span className="icon-search2" />
                 </div>
-              </a>
+              </NavLink>
               <div className="text p-3 text-center">
                 <h3 className="mb-3 truncated-title">
-                  <a href="rooms-single.html">{room.tenPhong}</a>
+                  <NavLink to={`/detail/${room.id}`}>{room.tenPhong}</NavLink>
                 </h3>
                 <p>
                   <span className="price mr-2">{room.giaTien}</span>
@@ -103,9 +102,9 @@ const RoomByLocate: React.FC<LocatePriceRangeProps> = ({
                 </ul>
                 <hr />
                 <p className="pt-1">
-                  <a href="room-single.html" className="btn-custom">
+                  <NavLink to={`/detail/${room.id}`} className="btn-custom">
                     Book Now <span className="icon-long-arrow-right" />
-                  </a>
+                  </NavLink>
                 </p>
               </div>
             </div>

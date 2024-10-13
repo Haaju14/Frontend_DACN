@@ -61,14 +61,8 @@ const RentedRoom: React.FC<RoomProps> = ({ userBookingRoomData }) => {
           <div className="card-body">
             <h5 className="card-title">{queryResultRoomByID.data?.tenPhong}</h5>
             <p className="card-text">{queryResultRoomByID.data?.moTa}</p>
-            <p className="card-text">
-              <small className="text-muted">
-                {userBookingRoomData?.soLuongKhach} khách • Phòng studio •{" "}
-                {queryResultRoomByID.data?.phongNgu} phòng ngủ •{" "}
-                {queryResultRoomByID.data?.giuong} giường •{" "}
-                {queryResultRoomByID.data?.phongTam} phòng tắm
-              </small>
-            </p>
+            
+            
             <p className="card-text">
               <small className="text-muted">
                 {[
@@ -82,8 +76,9 @@ const RentedRoom: React.FC<RoomProps> = ({ userBookingRoomData }) => {
                   .join(" • ")}
               </small>
             </p>
+
             <p className="card-text">
-              ${queryResultRoomByID.data?.giaTien}/đêm
+              {queryResultRoomByID.data?.giaTien}$
             </p>
           </div>
         </div>

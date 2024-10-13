@@ -6,6 +6,7 @@ import Loading from "../Antd/Loading";
 import { RoomData, LocateError, PriceRangeProps } from "../../../Model/Model";
 import "react-datepicker/dist/react-datepicker.css";
 import useRoute from "../../../hook/useRoute";
+import { NavLink } from "react-router-dom";
 
 const RoomAll: React.FC<PriceRangeProps> = ({ priceRange }) => {
   const { navigate } = useRoute();
@@ -69,7 +70,7 @@ const RoomAll: React.FC<PriceRangeProps> = ({ priceRange }) => {
               </a>
               <div className="text p-3 text-center">
                 <h3 className="mb-3 truncated-title">
-                  <a href="rooms-single.html">{room.tenPhong}</a>
+                  <NavLink to={`/detail/${room.id}`}> {room.tenPhong}</NavLink>
                 </h3>
                 <p>
                   <span className="price mr-2">{room.giaTien}</span>
@@ -90,9 +91,9 @@ const RoomAll: React.FC<PriceRangeProps> = ({ priceRange }) => {
                 </ul>
                 <hr />
                 <p className="pt-1">
-                  <a href="room-single.html" className="btn-custom">
+                  <NavLink to={`/detail/${room.id}`} className="btn-custom">
                     Book Now <span className="icon-long-arrow-right" />
-                  </a>
+                  </NavLink>
                 </p>
               </div>
             </div>

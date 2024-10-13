@@ -79,7 +79,7 @@ const UserProfilePage: React.FC = () => {
         </div>
         <div className="col-md-8">
           <div className="rented-rooms">
-            <h2>Room rented</h2>
+            <h2>Course List</h2>
             {paginatedRooms.map((userBookingRoomData) => (
               <RentedRoom
                 key={userBookingRoomData.id}
