@@ -38,7 +38,7 @@ const SectionInformation: React.FC = () => {
                   </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <NavLink to="https://www.facebook.com/hau.nguyen.1410">
+                  <NavLink to="https://www.facebook.com/hau.nguyen.1410" target="_blank" >
                     <span className="icon-facebook" />
                   </NavLink>
                 </li>
@@ -48,7 +48,7 @@ const SectionInformation: React.FC = () => {
                   </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <NavLink to="https://www.instagram.com/haaju14.10/">
+                  <NavLink to="https://www.instagram.com/haaju14.10/" target="_blank" >
                     <span className="icon-instagram" />
                   </NavLink>
                 </li>

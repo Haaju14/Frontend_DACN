@@ -3,8 +3,8 @@ import React, { useState } from "react";
 const RangeSliderComponent: React.FC<{
   onChange: (range: [number, number]) => void;
 }> = ({ onChange }) => {
-  const [minValue, setMinValue] = useState<number>(25000);
-  const [maxValue, setMaxValue] = useState<number>(50000);
+  const [minValue, setMinValue] = useState<number>(1);
+  const [maxValue, setMaxValue] = useState<number>(100);
 
   const handleMinRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(event.target.value), maxValue - 1);

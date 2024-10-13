@@ -19,12 +19,12 @@ const Footer: React.FC = () => {
                   </NavLink>
                 </li>
                 <li className="ftco-animate">
-                  <NavLink to="https://www.facebook.com/hau.nguyen.1410">
+                  <NavLink to="https://www.facebook.com/hau.nguyen.1410" target="_blank">
                     <span className="icon-facebook" />
                   </NavLink>
-                </li>
+                </li> 
                 <li className="ftco-animate">
-                  <NavLink to="https://www.instagram.com/haaju14.10/">
+                  <NavLink to="https://www.instagram.com/haaju14.10/" target="_blank">
                     <span className="icon-instagram" />
                   </NavLink>
                 </li>
@@ -41,9 +41,9 @@ const Footer: React.FC = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="py-2 d-block">
-                    Rooms
-                  </a>
+                  <NavLink to="/room" className="py-2 d-block"  >
+                    Course
+                  </NavLink>
                 </li>
                 <li>
                   <a href="#" className="py-2 d-block">
@@ -122,9 +122,9 @@ const Footer: React.FC = () => {
                 aria-hidden="true"
               />{" "}
               by
-              <a href="/" target="_blank">
-                AIRBNB
-              </a>
+              <NavLink to="/" target="_blank">
+                H&H
+              </NavLink>
             </p>
           </div>
         </div>

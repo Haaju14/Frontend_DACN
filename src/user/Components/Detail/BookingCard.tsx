@@ -3,12 +3,13 @@ import "../../../css/BookingCard.css";
 import { BookingRoomData, BookingCardProps } from "../../../Model/Model";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { convertDateAndTime } from "../../../util/utilMethod";
+import { convertDateAndTime, getDataTextStorage } from "../../../util/utilMethod";
 import { showNotification } from "../../../redux/reducers/notificationReducer";
 import { DatePicker, Modal } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import { roomApi } from "../../../service/room/roomApi";
 import useRoute from "../../../hook/useRoute";
+import { getDate } from "react-datepicker/dist/date_utils";
 
 const BookingCard: React.FC<BookingCardProps> = ({
   price,
@@ -121,7 +122,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
       <div className="price-rating">
         <span className="price">{price}$</span>
         <span className="rating">
-          <span className="rating-value">{totalStars}♥ </span>
+          <span className="rating-value">{totalStars} ♥ </span>
           <span className="rating-count">({totalComment} comment)</span>
         </span>
       </div>
