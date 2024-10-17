@@ -1,6 +1,6 @@
 import React from "react";
 
-const ManageNav: React.FC = () => {
+const Account_Infomation: React.FC = () => {
   return (
     <div
       className="hero-wrap"
@@ -20,4 +20,4 @@ const ManageNav: React.FC = () => {
   );
 };
 
-export default ManageNav;
+export default Account_Infomation;

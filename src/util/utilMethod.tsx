@@ -3,7 +3,7 @@ import { RuleObject } from "antd/es/form";
 
 const TOKEN_AUTHOR = "accessToken";
 const USER_LOGIN = "userLogin";
-const BOOK = "Book";
+const BUY = "Buy";
 const TOKEN_WEB =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2NSIsIkhldEhhblN0cmluZyI6IjI1LzExLzIwMjQiLCJIZXRIYW5UaW1lIjoiMTczMjQ5MjgwMDAwMCIsIm5iZiI6MTcwMjMxNDAwMCwiZXhwIjoxNzMyNjQwNDAwfQ._Cum2zMqV8nsbUfpCOe0ILWE_GvP8V8FQnmOR8PRB44";
 
@@ -197,7 +197,7 @@ export {
   removeDataJsonStorage,
   TOKEN_AUTHOR,
   USER_LOGIN,
-  BOOK,
+  BUY,
   TOKEN_WEB,
   convertDateAndTime,
   isTokenExpired,

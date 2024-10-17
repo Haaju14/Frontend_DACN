@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from "react";
 import "../../../css/BookingCard.css";
-import { BookingRoomData, BookingCardProps } from "../../../Model/Model";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { convertDateAndTime, getDataTextStorage } from "../../../util/utilMethod";
 import { showNotification } from "../../../redux/reducers/notificationReducer";
-import { DatePicker, Modal } from "antd";
+import { Modal } from "antd";
 import { useMutation } from "@tanstack/react-query";
-import { roomApi } from "../../../service/room/roomApi";
 import useRoute from "../../../hook/useRoute";
-import { getDate } from "react-datepicker/dist/date_utils";
+import { KhoaHocAPI } from "../../../util/fetchfromAPI";
+import { newDate } from "react-datepicker/dist/date_utils";
 
-const BookingCard: React.FC<BookingCardProps> = ({
+interface BuyCardProps {
+  price: number;
+  totalComment: number;
+  totalStars: number;
+  KhoaHocData: KhoaHocData; // Ensure the KhoaHocData type is included
+}
+
+type KhoaHocData = {
+  IDKhoaHoc: number;       
+  TenKhoaHoc: string;     
+  MoTaKhoaHoc: string;     
+  HinhAnh: string;         
+  Video: string;           
+  NgayDang: string;
+  LuotXem: number;         
+  BiDanh: string;          
+  MaNhom: string;          
+  SoLuongHocVien: number;  
+  GiamGia: number;    
+  GiaTien: string;            
+};
+
+const BuyCard: React.FC<BuyCardProps> = ({
   price,
   totalComment,
   totalStars,
-  roomData,
-  isBooking,
-  idBooking,
+  KhoaHocData,
 }) => {
   const { navigate } = useRoute();
   const dispatch = useDispatch();
-
-  const { bookingData } = useSelector((state: RootState) => state.bookReducer);
+  const { buyCard } = useSelector((state: RootState) => state.bookReducer);
   const { userLogin } = useSelector((state: RootState) => state.userReducer);
 
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -31,24 +49,16 @@ const BookingCard: React.FC<BookingCardProps> = ({
   const [days, setDays] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const mutationAddBookingRoom = useMutation({
-    mutationFn: roomApi.addBookingRoom,
-    onSuccess: () => {},
-    onError: () => {},
+  const mutationAddCourse = useMutation({
+    mutationFn: (buyCourse: any) => KhoaHocAPI(buyCourse), // Adjust the parameters as per your API
+    onSuccess: () => {
+      dispatch(showNotification("Booking success"));
+      navigate("/info-user");
+    },
+    onError: () => {
+      dispatch(showNotification("Booking failed. Please try again."));
+    },
   });
-
-  const mutationUpdateBookingRoom = useMutation({
-    mutationFn: (data: { bookingRoom: object; id: string }) =>
-      roomApi.updateBookingRoom(data.bookingRoom, data.id),
-    onSuccess: () => {},
-    onError: () => {},
-  });
-
-  const incrementGuests = () => setGuests(guests + 1);
-  const decrementGuests = () => setGuests(Math.max(1, guests - 1));
-
-  const formatDate = (date?: Date) =>
-    date ? convertDateAndTime(date.toString()) : "";
 
   const handleBooking = () => {
     if (userLogin) {
@@ -60,31 +70,16 @@ const BookingCard: React.FC<BookingCardProps> = ({
 
   const handleOk = () => {
     if (userLogin && startDate && endDate) {
-      const bookingRoom: BookingRoomData = {
-        maPhong: roomData.id,
-        ngayDen: convertDateAndTime(startDate.toString()),
-        ngayDi: convertDateAndTime(endDate.toString()),
+      const buyCourse = {
+        maKhoaHoc: KhoaHocData.IDKhoaHoc, // Corrected the ID access
+        ngayMua: convertDateAndTime(startDate.toString()),
         soLuongKhach: guests,
-        maNguoiDung: userLogin?.user.id,
+        maNguoiDung: userLogin?.user.IDNguoiDung, // Make sure this matches your user object
       };
 
-      if (!isBooking) {
-        mutationAddBookingRoom.mutate(bookingRoom);
-      } else {
-        mutationUpdateBookingRoom.mutate({
-          bookingRoom,
-          id: idBooking,
-        });
-      }
+      // Mutate to add the course booking
+      mutationAddCourse.mutate(buyCourse);
       setIsModalOpen(false);
-
-      dispatch(
-        showNotification(
-          !isBooking ? "Booking success" : "Update booking success"
-        )
-      );
-
-      navigate("/info-user");
     }
   };
 
@@ -93,28 +88,21 @@ const BookingCard: React.FC<BookingCardProps> = ({
   };
 
   useEffect(() => {
-    if (bookingData) {
-      setStartDate(bookingData.dateCheckIn || undefined);
-      setEndDate(bookingData.dateCheckOut || undefined);
-      setGuests(bookingData.totalGuest || 3);
+    if (BuyCard) {
+      setStartDate(BuyCard.dateCheckIn || undefined);
+      setEndDate(BuyCard.dateCheckOut || undefined);
+      setGuests(BuyCard.totalGuest || 3);
     }
-  }, [bookingData]);
+  }, [BuyCard]);
 
   useEffect(() => {
     const calculateDays = (start?: Date, end?: Date): number => {
-      const dateStart = new Date(start || "");
-      const dateEnd = new Date(end || "");
-
-      if (!dateStart || !dateEnd) return 0;
-      const diffTime = Math.abs(dateEnd.getTime() - dateStart.getTime());
+      if (!start || !end) return 0;
+      const diffTime = Math.abs(end.getTime() - start.getTime());
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     };
 
-    if (startDate && endDate) {
-      setDays(calculateDays(startDate, endDate));
-    } else {
-      setDays(0);
-    }
+    setDays(calculateDays(startDate, endDate));
   }, [startDate, endDate]);
 
   return (
@@ -131,36 +119,34 @@ const BookingCard: React.FC<BookingCardProps> = ({
         Buy Course
       </button>
       <Modal
-        title={`Are you sure you want to buy this Course? `}      
+        title={`Are you sure you want to buy this Course?`}      
         open={isModalOpen}
         onOk={handleOk} 
         onCancel={handleCancel}
       >
         <p>
-          {roomData.tenPhong}
+          {KhoaHocData.TenKhoaHoc} {/* Ensure this matches your KhoaHocData object */}
         </p>
         <p>
-          Date buy: {formatDate(startDate)} 
+          Date buy: {convertDateAndTime(newDate?.toString())} 
         </p>
         <p>
           Course Price: {price}$
         </p>
       </Modal>
       <div className="cost-breakdown">
-
         <div className="total-cost">
           <span>Price before Voucher:</span>
-          <span>{price  }$</span>
+          <span>{price}$</span>
         </div>
         
         <div className="total-cost">
           <span>Price after Voucher:</span>
-          <span>{price  * 0.8}$</span>
+          <span>{price * 0.8}$</span>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default BookingCard;
+export default BuyCard;

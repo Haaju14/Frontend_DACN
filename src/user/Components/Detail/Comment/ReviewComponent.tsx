@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Button, Input, Rate, notification } from "antd";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { commentApi } from "../../../../service/comment/commentApi";
-import { CommentUserData, ReviewComponentProps } from "../../../../Model/Model";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
 const { TextArea } = Input;

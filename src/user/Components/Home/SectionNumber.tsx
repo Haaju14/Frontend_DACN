@@ -1,41 +1,73 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { userApi } from "../../../service/user/userApi";
-import { roomApi } from "../../../service/room/roomApi";
 import Loading from "../Antd/Loading";
-import { UserData, RoomData, LocateError } from "../../../Model/Model";
+import { KhoaHocAPI, UserAPI } from "../../../util/fetchfromAPI";
+
+interface User {
+  IDNguoiDung: number;
+  TenDangNhap: string;
+  Email: string;
+  MatKhau: string;
+  HoTen: string;
+  GioiTinh: boolean;
+  SDT: string;
+  Role: string;
+  AnhDaiDien?: string;
+}
+
+interface KhoaHocData {
+  IDKhoaHoc: number;
+  TenKhoaHoc: string;
+  MoTaKhoaHoc: string;
+  HinhAnh: string;
+  Video: string;
+  NgayDang: string;
+  LuotXem: number;
+  BiDanh: string;
+  MaNhom: string;
+  SoLuongHocVien: number;
+  GiamGia: number;
+  GiaTien: string;
+}
 
 const SectionNumber: React.FC = () => {
-  const queryResultUser: UseQueryResult<UserData[], LocateError> = useQuery({
-    queryKey: ["userListApi"],
-    queryFn: userApi.getUser,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: true,
-  });
-
-  const queryResultRoom: UseQueryResult<RoomData[], LocateError> = useQuery({
-    queryKey: ["roomListApi"],
-    queryFn: roomApi.getRoom,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: true,
-  });
-
-  if (queryResultUser.isLoading || queryResultRoom.isLoading) {
+    const queryResultUser: UseQueryResult<User[]> = useQuery({
+        queryKey: ["userListApi"],
+        queryFn: async () => {
+          // Call the appropriate method from UserAPI, e.g., getUserList()
+          return UserAPI;
+        },
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        refetchOnWindowFocus: true,
+      });
+      
+      const queryResultCourse: UseQueryResult<KhoaHocData[]> = useQuery({
+        queryKey: ["CourseListApi"],
+        queryFn: async () => {
+          // Call the appropriate method from KhoaHocAPI, e.g., getCourseList()
+          return KhoaHocAPI;
+        },
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        refetchOnWindowFocus: true,
+      });
+  if (queryResultUser.isLoading || queryResultCourse.isLoading) {
     return <Loading />;
   }
 
-  if (queryResultUser.error && queryResultRoom.error) {
-    return (
-      <div>
-        Error: {queryResultUser.error.message} {queryResultRoom.error.message}
-      </div>
-    );
+  // Handle errors separately for better feedback
+  if (queryResultUser.error) {
+    return <div>Error loading users: {(queryResultUser.error as Error).message}</div>;
   }
 
+  if (queryResultCourse.error) {
+    return <div>Error loading courses: {(queryResultCourse.error as Error).message}</div>;
+  }
+
+  // Get counts from fetched data
   const countUser =
-    queryResultUser.data?.filter((a) => a.role === "USER").length || 0;
+    queryResultUser.data?.filter((a) => a.Role === "hocvien").length || 0;
   const countAdmin =
-    queryResultUser.data?.filter((a) => a.role === "ADMIN").length || 0;
-  const countRoom = queryResultRoom.data?.length || 0;
+    queryResultUser.data?.filter((a) => a.Role === "admin").length || 0;
+  const countCourse = queryResultCourse.data?.length || 0;
 
   return (
     <section
@@ -50,7 +82,7 @@ const SectionNumber: React.FC = () => {
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={6189}>
+                    <strong className="number counter" data-number={countUser}>
                       {countUser}
                     </strong>
                     <span>Students</span>
@@ -60,20 +92,20 @@ const SectionNumber: React.FC = () => {
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={875}>
-                      {countRoom}
+                    <strong className="number counter" data-number={countCourse}>
+                      {countCourse}
                     </strong>
-                    <span>Course</span>
+                    <span>Courses</span>
                   </div>
                 </div>
               </div>
               <div className="col-md-4 d-flex justify-content-center counter-wrap ftco-animate">
                 <div className="block-18 text-center">
                   <div className="text">
-                    <strong className="number counter" data-number={285}>
+                    <strong className="number counter" data-number={countAdmin}>
                       {countAdmin}
                     </strong>
-                    <span>Teacher</span>
+                    <span>Teachers</span>
                   </div>
                 </div>
               </div>

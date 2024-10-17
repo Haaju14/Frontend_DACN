@@ -1,223 +1,253 @@
 import React, { useState } from "react";
-import {
-  wordRegExp,
-  emailRegExp,
-  numberRegExp,
-  phoneRegExp,
-  passRegExp,
-  birthRegExp,
-  isOver18,
-} from "../../util/utilMethod";
-import useCustomFormik from "../../hook/useCustomFormik";
-import { userApi } from "../../service/user/userApi";
-import { useMutation } from "@tanstack/react-query";
-import * as Yup from "yup";
-import { RegisterFormValues } from "../../Model/Model";
-import useRoute from "../../hook/useRoute";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // For validation
+import { BASE_URL } from "../../util/fetchfromAPI";
 
 const Register: React.FC = () => {
-  const { navigate } = useRoute();
+    const [message, setMessage] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [avatar, setAvatar] = useState<File | null>(null); // State for avatar
 
-  const [showPassword, setShowPassword] = useState(false);
+    // API call for registration
+    const signUpAPI = async (userData: {
+        TenDangNhap: string;
+        Email: string;
+        MatKhau: string;
+        HoTen: string;
+        GioiTinh: boolean;
+        SDT: string;
+        Role: string; // default values
+        AnhDaiDien: string; // Avatar field
+    }) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/signup`, userData);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+            if (response.status === 201) {
+                // Registration successful
+                localStorage.setItem("token", response.data.token);
+                setMessage("Sign up successful!");
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                setMessage(error.response.data.message || "Sign up failed!");
+            } else {
+                setMessage("An unexpected error occurred.");
+            }
+        }
+    };
 
-  const mutation = useMutation({
-    mutationFn: userApi.postRegisterUser,
-    onSuccess: () => {
-      navigate(0);
-    },
-    onError: () => {},
-  });
+    // Use Formik for form management
+    const formik = useFormik({
+        initialValues: {
+            TenDangNhap: "",
+            Email: "",
+            MatKhau: "",
+            HoTen: "",
+            GioiTinh: true, // Default to male
+            SDT: "",
+            Role: "hocvien", // Default role
+        },
+        validationSchema: Yup.object({
+            TenDangNhap: Yup.string().required("Username is required"),
+            Email: Yup.string().email("Invalid email address").required("Email is required"),
+            MatKhau: Yup.string().required("Password is required"),
+            HoTen: Yup.string().required("Full name is required"),
+            SDT: Yup.string().required("Phone number is required"),
+            GioiTinh: Yup.boolean().required("Gender is required"),
+            Role: Yup.string().oneOf(["hocvien"], "Role must be 'hocvien'").required("Role is required"),
+        }),
+        onSubmit: async (values) => {
+            // Prepare data for API call
+            const userData = {
+                TenDangNhap: values.TenDangNhap,
+                Email: values.Email,
+                MatKhau: values.MatKhau,
+                HoTen: values.HoTen,
+                GioiTinh: values.GioiTinh,
+                SDT: values.SDT,
+                Role: values.Role,
+                AnhDaiDien: avatar ? await uploadAvatar(avatar) : "", // Upload avatar and get the URL
+            };
+            signUpAPI(userData);
+        },
+    });
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .matches(wordRegExp, "Name should be the text")
-      .required("Please input name!"),
-    email: Yup.string()
-      .matches(emailRegExp, "Email invalidate")
-      .required("Please input email!"),
-    password: Yup.string()
-      .matches(
-        passRegExp,
-        "Password must have 6-10 characters (contains at least 1 numeric character, 1 uppercase character, 1 special character)"
-      )
-      .required("Please input password!"),
-    phone: Yup.string()
-      .matches(numberRegExp, "Phone can only be numbers")
-      .matches(phoneRegExp, "Phone invalid")
-      .required("Please input phone!"),
-    birthday: Yup.string()
-      .matches(birthRegExp, "Birth must be in the format YYYY-MM-DD")
-      .required("Please input birthday!")
-      .test("age", "You must be over 18 years old", (value) => isOver18(value)),
-    gender: Yup.boolean().required("Please input gender!"),
-  });
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-  const formik = useCustomFormik<RegisterFormValues>(
-    {
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      birthday: "",
-      gender: true,
-    },
-    validationSchema,
-    (values) => {
-      mutation.mutate(values);
-    }
-  );
+    // Function to handle avatar upload
+    const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.currentTarget.files?.[0] || null;
+        setAvatar(file);
+    };
 
-  return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerName">Name</label>
-          <input
-            type="text"
-            className="form-control rounded-input"
-            id="registerName"
-            placeholder="Enter name"
-            name="name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-          />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="text-danger">{formik.errors.name}</div>
-          ) : null}
-        </div>
-      </div>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerEmail">Email address</label>
-          <input
-            type="email"
-            className="form-control rounded-input"
-            id="registerEmail"
-            placeholder="Enter email"
-            name="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-danger">{formik.errors.email}</div>
-          ) : null}
-        </div>
-      </div>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerPassword">Password</label>
-          <div className="input-group">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control rounded-input"
-              id="loginPassword"
-              placeholder="Password"
-              name="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-            <div className="input-group-append">
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={togglePasswordVisibility}
-                style={{ marginTop: "0px" }}
-              >
-                <i
-                  className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`}
-                ></i>
-              </button>
+    // Mock function to simulate avatar upload
+    const uploadAvatar = async (file: File): Promise<string> => {
+        // You would normally upload the file to a server and return the URL
+        // Here we just return a placeholder URL for demonstration
+        return "https://example.com/path/to/avatar.jpg"; // Placeholder URL
+    };
+
+    return (
+        <form onSubmit={formik.handleSubmit}>
+            <div className="form-group">
+                <label htmlFor="registerName">Username</label>
+                <input
+                    type="text"
+                    className="form-control rounded-input"
+                    id="registerName"
+                    placeholder="Enter username"
+                    name="TenDangNhap"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.TenDangNhap}
+                />
+                {formik.touched.TenDangNhap && formik.errors.TenDangNhap ? (
+                    <div className="text-danger">{formik.errors.TenDangNhap}</div>
+                ) : null}
             </div>
-          </div>
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-danger">{formik.errors.password}</div>
-          ) : null}
-        </div>
-      </div>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerPhone">Phone</label>
-          <input
-            type="number"
-            className="form-control rounded-input"
-            id="registerPhone"
-            placeholder="Phone"
-            name="phone"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-          />
-          {formik.touched.phone && formik.errors.phone ? (
-            <div className="text-danger">{formik.errors.phone}</div>
-          ) : null}
-        </div>
-      </div>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerBirthday">Birthday</label>
-          <input
-            type="date"
-            className="form-control rounded-input"
-            id="registerBirthday"
-            placeholder="Enter date"
-            name="birthday"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.birthday}
-          />
-          {formik.touched.birthday && formik.errors.birthday ? (
-            <div className="text-danger">{formik.errors.birthday}</div>
-          ) : null}
-        </div>
-      </div>
-      <div className="form-group">
-        <div>
-          <label htmlFor="registerGender" className="mr-2">
-            Gender
-          </label>
-          <div className="form-check form-check-inline ms-2">
-            <input
-              type="radio"
-              id="male"
-              name="registerGender"
-              value="true"
-              className="form-check-input"
-              checked={formik.values.gender === true}
-              onChange={() => formik.setFieldValue("gender", true)}
-            />
-
-            <label className="form-check-label">Male</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              type="radio"
-              id="female"
-              name="registerGender"
-              value="false"
-              checked={formik.values.gender === false}
-              onChange={() => formik.setFieldValue("gender", false)}
-              className="form-check-input"
-            />
-
-            <label className="form-check-label">Female</label>
-          </div>
-          {formik.touched.gender && formik.errors.gender ? (
-            <div className="text-danger">{formik.errors.gender}</div>
-          ) : null}
-        </div>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Register
-      </button>
-    </form>
-  );
+            <div className="form-group">
+                <label htmlFor="registerEmail">Email</label>
+                <input
+                    type="email"
+                    className="form-control rounded-input"
+                    id="registerEmail"
+                    placeholder="Enter email"
+                    name="Email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.Email}
+                />
+                {formik.touched.Email && formik.errors.Email ? (
+                    <div className="text-danger">{formik.errors.Email}</div>
+                ) : null}
+            </div>
+            <div className="form-group">
+                <label htmlFor="registerPassword">Password</label>
+                <div className="input-group">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control rounded-input"
+                        id="registerPassword"
+                        placeholder="Password"
+                        name="MatKhau"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.MatKhau}
+                    />
+                    <div className="input-group-append">
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={togglePasswordVisibility}
+                            style={{ marginTop: "0px" }}
+                        >
+                            <i
+                                className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`}
+                            ></i>
+                        </button>
+                    </div>
+                </div>
+                {formik.touched.MatKhau && formik.errors.MatKhau ? (
+                    <div className="text-danger">{formik.errors.MatKhau}</div>
+                ) : null}
+            </div>
+            <div className="form-group">
+                <label htmlFor="registerFullName">Full Name</label>
+                <input
+                    type="text"
+                    className="form-control rounded-input"
+                    id="registerFullName"
+                    placeholder="Full name"
+                    name="HoTen"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.HoTen}
+                />
+                {formik.touched.HoTen && formik.errors.HoTen ? (
+                    <div className="text-danger">{formik.errors.HoTen}</div>
+                ) : null}
+            </div>
+            <div className="form-group">
+                <label htmlFor="registerPhone">Phone</label>
+                <input
+                    type="text"
+                    className="form-control rounded-input"
+                    id="registerPhone"
+                    placeholder="Phone number"
+                    name="SDT"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.SDT}
+                />
+                {formik.touched.SDT && formik.errors.SDT ? (
+                    <div className="text-danger">{formik.errors.SDT}</div>
+                ) : null}
+            </div>
+            <div className="form-group">
+                <label htmlFor="registerGender" className="mr-2">Gender</label>
+                <div className="form-check form-check-inline">
+                    <input
+                        type="radio"
+                        id="nam"
+                        name="GioiTinh"
+                        value="true"
+                        className="form-check-input"
+                        checked={formik.values.GioiTinh === true}
+                        onChange={() => formik.setFieldValue("GioiTinh", true)}
+                    />
+                    <label className="form-check-label">Nam</label>
+                </div>
+                <div className="form-check form-check-inline">
+                    <input
+                        type="radio"
+                        id="nu"
+                        name="GioiTinh"
+                        value="false"
+                        className="form-check-input"
+                        checked={formik.values.GioiTinh === false}
+                        onChange={() => formik.setFieldValue("GioiTinh", false)}
+                    />
+                    <label className="form-check-label">Nữ</label>
+                </div>
+                {formik.touched.GioiTinh && formik.errors.GioiTinh ? (
+                    <div className="text-danger">{formik.errors.GioiTinh}</div>
+                ) : null}
+            </div>
+            <div className="form-group">
+                <label htmlFor="registerRole">Role</label>
+                <input
+                  type="text"
+                  className="form-control rounded-input"
+                  id="registerRole"
+                  name="Role"
+                  value={formik.values.Role}
+                  readOnly // Make the input read-only
+                />
+                {formik.touched.Role && formik.errors.Role ? (
+                  <div className="text-danger">{formik.errors.Role}</div>
+                ) : null}
+              </div>
+            <div className="form-group">
+                <label htmlFor="registerAvatar">Avatar</label>
+                <input
+                    type="file"
+                    className="form-control-file"
+                    id="registerAvatar"
+                    name="AnhDaiDien"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                />
+                {avatar && <div className="mt-2">Selected file: {avatar.name}</div>}
+            </div>
+            <button type="submit" className="btn btn-primary">
+                Register
+            </button>
+            {message && <div className="mt-3">{message}</div>}
+        </form>
+    );
 };
 
 export default Register;

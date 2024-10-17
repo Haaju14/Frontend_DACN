@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const RoomsNav: React.FC = () => {
+const KhoaHocNav: React.FC = () => {
   return (
     <div
       className="hero-wrap"
@@ -26,4 +26,4 @@ const RoomsNav: React.FC = () => {
   );
 };
 
-export default RoomsNav;
+export default KhoaHocNav;

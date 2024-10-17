@@ -1,6 +1,10 @@
 // notificationSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NotificationState } from "../../Model/Model";
+
+export interface NotificationState {
+  visible: boolean;
+  message: string;
+}
 
 const initialState: NotificationState = {
   visible: false,

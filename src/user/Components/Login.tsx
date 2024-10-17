@@ -1,70 +1,72 @@
-import React, { useState } from "react";
-import {
-  emailRegExp,
-  passRegExp,
-  getDataJsonStorage,
-  USER_LOGIN,
-} from "../../util/utilMethod";
-import { userApi } from "../../service/user/userApi";
-import useCustomFormik from "../../hook/useCustomFormik";
-import { useMutation } from "@tanstack/react-query";
-import * as Yup from "yup";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // For validation
+import { BASE_URL } from "../../util/fetchfromAPI";
 import { useDispatch } from "react-redux";
-import { showNotification } from "../../redux/reducers/notificationReducer";
-import { LoginFormValues } from "../../Model/Model";
+import { login } from "../../redux/reducers/userReducer"; // Import action login
 import useRoute from "../../hook/useRoute";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
   const { navigate } = useRoute();
 
-  const [showPassword, setShowPassword] = useState(false);
-
+  // Toggle visibility of password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const mutation = useMutation({
-    mutationFn: userApi.postLoginUser,
-    onSuccess: (data) => {
-      let dataUserLogin = getDataJsonStorage(USER_LOGIN);
-      if (dataUserLogin) {
-        if (data.content.user.role === "USER") {
-          navigate(0);
-        } else if (data.content.user.role === "ADMIN") {
-          navigate("/admin/table-user");
-          window.location.reload();
+  
+  // Formik for form handling and validation
+  const formik = useFormik({
+    initialValues: {
+      Email: "",   // Correct case for consistency
+      MatKhau: "", // Correct case for consistency
+    },
+    validationSchema: Yup.object({
+      Email: Yup.string().email("Invalid email address").required("Required"), // Consistent key
+      MatKhau: Yup.string().required("Password is required"), // Consistent key
+    }),
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(`${BASE_URL}/login`, {
+          Email: values.Email,
+          MatKhau: values.MatKhau,
+        });
+    
+        if (response.status === 200) {
+          const token = response.data.content.token; // Lấy token từ content
+          const user = response.data.content.user; // Lấy thông tin người dùng từ response
+          
+          // Dispatch action login với user và token
+          dispatch(login({ user, token })); 
+          
+          setMessage("Login successful!");
+          navigate("/khoa-hoc"); 
         }
-      } else {
-        dispatch(showNotification("Incorrect password or username"));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            setMessage(error.response.data.message || "Login failed with server error");
+          } else if (error.request) {
+            setMessage("No response from server. Please try again later.");
+          }
+        } else {
+          setMessage("An unexpected error occurred: " + (error as Error).message);
+        }
       }
     },
-    onError: () => {},
   });
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .matches(emailRegExp, "Email invalidate")
-      .required("Please input email!"),
-    password: Yup.string()
-      .matches(
-        passRegExp,
-        "Password must be 6-12 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
-      )
-      .required("Please input password!"),
-  });
+  // Log for specific field changes
+  useEffect(() => {
+    console.log("Email value changed:", formik.values.Email);
+  }, [formik.values.Email]);
 
-  const formik = useCustomFormik<LoginFormValues>(
-    {
-      email: "",
-      password: "",
-    },
-    validationSchema,
-    (values) => {
-      mutation.mutate(values);
-    }
-  );
+  useEffect(() => {
+    console.log("MatKhau value changed:", formik.values.MatKhau);
+  }, [formik.values.MatKhau]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -76,13 +78,13 @@ const Login: React.FC = () => {
             className="form-control rounded-input"
             id="loginEmail"
             placeholder="Enter email"
-            name="email"
+            name="Email" // Updated to match formik values
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.email}
+            value={formik.values.Email} // Updated to match formik values
           />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-danger">{formik.errors.email}</div>
+          {formik.touched.Email && formik.errors.Email ? (
+            <div className="text-danger">{formik.errors.Email}</div>
           ) : null}
         </div>
       </div>
@@ -95,10 +97,10 @@ const Login: React.FC = () => {
               className="form-control rounded-input"
               id="loginPassword"
               placeholder="Password"
-              name="password"
+              name="MatKhau" // Updated to match formik values
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.password}
+              value={formik.values.MatKhau} // Updated to match formik values
             />
             <div className="input-group-append">
               <button
@@ -107,20 +109,19 @@ const Login: React.FC = () => {
                 onClick={togglePasswordVisibility}
                 style={{ marginTop: "0px" }}
               >
-                <i
-                  className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`}
-                ></i>
+                <i className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`}></i>
               </button>
             </div>
           </div>
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-danger">{formik.errors.password}</div>
+          {formik.touched.MatKhau && formik.errors.MatKhau ? (
+            <div className="text-danger">{formik.errors.MatKhau}</div>
           ) : null}
         </div>
       </div>
       <button type="submit" className="btn btn-primary">
         Login
       </button>
+      {message && <div className="mt-3">{message}</div>}
     </form>
   );
 };

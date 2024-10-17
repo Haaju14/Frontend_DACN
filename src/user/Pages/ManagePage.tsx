@@ -1,6 +1,6 @@
 import React from "react";
-import ManageNav from "../Components/Manage/ManageNav";
-import UserProfilePage from "../Components/Manage/UserProfilePage";
+import ManageNav from "../Components/Account_Infomation/ManageNav";
+import UserProfilePage from "../Components/Account_Infomation/UserProfilePage";
 
 const ManagePage: React.FC = () => {
   return (

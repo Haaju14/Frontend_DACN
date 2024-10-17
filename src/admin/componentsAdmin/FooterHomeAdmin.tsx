@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const FooterHomeAdmin: React.FC = () => {
   return (
@@ -7,9 +8,9 @@ const FooterHomeAdmin: React.FC = () => {
         <nav className="pull-left">
           <ul className="nav">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                AIRBNB
-              </a>
+              <NavLink className="nav-link" to="/">
+                H&H
+              </NavLink>
             </li>
           </ul>
         </nav>
