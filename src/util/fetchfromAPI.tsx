@@ -72,8 +72,14 @@ export const getPayCoursesAPI = async () => {
     return response.data;
 };
 //Xem chi tiết khóa học theo IDKhoaHoc
-export const getCourseDetailAPI = async (p0: string) => {
-    const response = await axios.get(`${BASE_URL}/khoa-hoc/xem-chi-tiet/:id`,);
-    return response.data;
-}
 
+
+
+export const getCourseDetailAPI = async (id: string, token: string) => {
+  const response = await axios.get(`${BASE_URL}/khoa-hoc/xem-chi-tiet/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Đảm bảo token được định dạng chính xác
+    },
+  });
+  return response.data;
+};

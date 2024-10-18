@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BuyCard } from "../../user/Components/Detail/BuyCard";
 import {
   BUY,
   getDataJsonStorage,
@@ -7,8 +6,8 @@ import {
   setDataJsonStorage,
 } from "../../util/utilMethod";
 
-export interface BuyCourseType {
-  buyCard: BuyCard | null;  // Use camelCase for better consistency with JS/TS conventions
+export interface BuyCard {
+  
 }
 
 const initialState: BuyCourseType = {

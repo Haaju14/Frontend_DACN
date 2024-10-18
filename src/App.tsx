@@ -34,7 +34,7 @@ function App() {
               <Route path="" element={<KhoaHocPage />}></Route>
               <Route path=":locate" element={<KhoaHocPage />}></Route>
             </Route>
-            <Route path="detail">
+            <Route path="/khoa-hoc/xem-chi-tiet/">
               <Route path=":id" element={<DetailPage />}></Route>
             </Route>
             <Route path="/user/profile" element={<ManagePage />}></Route>

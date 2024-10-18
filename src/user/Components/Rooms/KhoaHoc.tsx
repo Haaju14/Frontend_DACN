@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../Antd/Loading";
-import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import RangeSliderComponent from "./RangeSliderComponent";
 import { BASE_URL } from "../../../util/fetchfromAPI";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
 
- interface KhoaHocData {
-  IDKhoaHoc: number;       
-  TenKhoaHoc: string;     
-  MoTaKhoaHoc: string;     
-  HinhAnh: string;         
-  Video: string;           
+interface KhoaHocData {
+  IDKhoaHoc: number;
+  TenKhoaHoc: string;
+  MoTaKhoaHoc: string;
+  HinhAnh: string;
+  Video: string;
   NgayDang: string;
-  LuotXem: number;         
-  SoLuongHocVien: number;  
-  GiamGia: number;    
-  GiaTien: string;  
-  LoaiKhoaHoc: string;          
-};
+  LuotXem: number;
+  GiamGia: number;
+  GiaTien: string;
+  LoaiKhoaHoc: string;
+}
 
 const KhoaHocComponent: React.FC = () => {
   const [selectedTag, setSelectedLocation] = useState<string>("");
   const [priceRange, setPriceRange] = useState<number[]>([0, 100]);
-  
+  const navigate = useNavigate(); // Khởi tạo useNavigate
+
   const fetchKhoaHocAPI = async () => {
     const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
     return data.content; // Xử lý khi không có dữ liệu
   };
-  
 
-  const { data: KhoaHocList = [], isLoading, isError, error } = useQuery<KhoaHocData[]>({
+  const { data: KhoaHocList = [], isLoading, isError } = useQuery<KhoaHocData[]>({
     queryKey: ["KhoaHoc"],
     queryFn: fetchKhoaHocAPI,
   });
@@ -42,15 +41,20 @@ const KhoaHocComponent: React.FC = () => {
   const handlePriceRangeChange = (range: number[]) => {
     setPriceRange(range);
   };
+
+  // Hàm xử lý chuyển hướng đến trang chi tiết khóa học
+  const handleViewDetails = (id: number) => {
+    navigate(`/khoa-hoc/xem-chi-tiet/${id}`); // Chuyển hướng đến trang chi tiết
+  };
+
+
   if (isLoading) {
     return <Loading />;
   }
 
   if (isError) {
-    return <div>Error loading courses.</div>; 
+    return <div>Error loading courses.</div>;
   }
-  
-
 
   return (
     <section className="ftco-section bg-light">
@@ -67,18 +71,16 @@ const KhoaHocComponent: React.FC = () => {
                         <span className="ion-ios-arrow-down" />
                       </div>
                       <select
-                        name=""
-                        id=""
                         className="form-control"
                         value={selectedTag}
                         onChange={handleTagChange}
                       >
                         <option value="">All Khoa Học</option>
-                        <option value="">Java</option>
-                        <option value="">Python</option>
-                        <option value="">Unity</option>
-                        <option value="">Reactjs</option>
-                        <option value="">C++</option>
+                        <option value="Java">Java</option>
+                        <option value="Python">Python</option>
+                        <option value="Unity">Unity</option>
+                        <option value="Reactjs">Reactjs</option>
+                        <option value="C++">C++</option>
                       </select>
                     </div>
                   </div>
@@ -98,11 +100,24 @@ const KhoaHocComponent: React.FC = () => {
                       <img src={KhoaHoc.HinhAnh} alt={KhoaHoc.TenKhoaHoc} />
                       <h3>{KhoaHoc.TenKhoaHoc}</h3>
                       <p>{KhoaHoc.MoTaKhoaHoc}</p>
-                      <p><strong>Price:</strong> {KhoaHoc.GiaTien}</p> {}
-                      <p><strong>Posted On:</strong> {KhoaHoc.NgayDang}</p>
-                      <p><strong>Views:</strong> {KhoaHoc.LuotXem}</p>
-                      <p><strong>Discount:</strong> {KhoaHoc.GiamGia}%</p>
-                      <button className="btn btn-primary">View Details</button>
+                      <p>
+                        <strong>Price:</strong> {KhoaHoc.GiaTien}
+                      </p>
+                      <p>
+                        <strong>Posted On:</strong> {KhoaHoc.NgayDang}
+                      </p>
+                      <p>
+                        <strong>Views:</strong> {KhoaHoc.LuotXem}
+                      </p>
+                      <p>
+                        <strong>Discount:</strong> {KhoaHoc.GiamGia}%
+                      </p>
+                      <button 
+                        className="btn btn-primary" 
+                        onClick={() => handleViewDetails(KhoaHoc.IDKhoaHoc)} // Gọi hàm khi nhấn nút
+                      >
+                        View Details
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -114,6 +129,5 @@ const KhoaHocComponent: React.FC = () => {
     </section>
   );
 };
-
 
 export default KhoaHocComponent;

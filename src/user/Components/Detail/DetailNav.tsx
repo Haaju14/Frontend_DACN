@@ -20,7 +20,7 @@ const DetailNav: React.FC = () => {
                   <NavLink to="/">Home</NavLink>
                 </span>{" "}
                 <span className="mr-2">
-                  <NavLink to="/room">Course</NavLink>
+                  <NavLink to="/khoa-hoc">Course</NavLink>
                 </span>{" "}
                 <span>Course Detail</span>
               </p>

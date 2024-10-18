@@ -42,6 +42,9 @@ const Login: React.FC = () => {
           // Dispatch action login với user và token
           dispatch(login({ user, token })); 
           
+          // Lưu token vào localStorage
+          localStorage.setItem("token", token);
+          
           setMessage("Login successful!");
           navigate("/khoa-hoc"); 
         }

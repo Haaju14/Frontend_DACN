@@ -73,7 +73,7 @@ const KhoaHocAll: React.FC = () => {
           <div className="col-sm col-md-6 col-lg-4 ftco-animate" key={KhoaHoc.IDKhoaHoc}>
             <div className="khoa-hoc-item">
               <NavLink
-                to={`/detail/${KhoaHoc.IDKhoaHoc}`}
+                to={`/khoa-hoc/xem-chi-tiet/:id${KhoaHoc.IDKhoaHoc}`}
                 className="img d-flex justify-content-center align-items-center"
                 style={{ backgroundImage: `url(${KhoaHoc.HinhAnh})` }}
               >
@@ -83,7 +83,7 @@ const KhoaHocAll: React.FC = () => {
               </NavLink>
               <div className="text p-3 text-center">
                 <h3 className="mb-3 truncated-title">
-                  <NavLink to={`/detail/${KhoaHoc.IDKhoaHoc}`}>{KhoaHoc.TenKhoaHoc}</NavLink>
+                  <NavLink to={`/khoa-hoc/xem-chi-tiet/:id/${KhoaHoc.IDKhoaHoc}`}>{KhoaHoc.TenKhoaHoc}</NavLink>
                 </h3>
                 <p>
                   <span className="price mr-2">{KhoaHoc.GiaTien}</span>
@@ -98,7 +98,7 @@ const KhoaHocAll: React.FC = () => {
                 </ul>
                 <hr />
                 <p className="pt-1">
-                  <NavLink to={`/detail/${KhoaHoc.IDKhoaHoc}`} className="btn-custom">
+                  <NavLink to={`/khoa-hoc/xem-chi-tiet/:id/${KhoaHoc.IDKhoaHoc}`} className="btn-custom">
                     View Details <span className="icon-long-arrow-right" />
                   </NavLink>
                 </p>

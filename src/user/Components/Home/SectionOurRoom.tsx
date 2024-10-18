@@ -3,7 +3,8 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import Loading from "../Antd/Loading";
 import useRoute from "../../../hook/useRoute";
 import { NavLink } from "react-router-dom";
-import { KhoaHocAPI } from "../../../util/fetchfromAPI";
+import { BASE_URL, KhoaHocAPI } from "../../../util/fetchfromAPI";
+import axios from "axios";
 
 // Define KhoaHocData interface
 interface KhoaHocData {
@@ -24,7 +25,10 @@ interface KhoaHocData {
 
 const SectionOurRoom: React.FC = () => {
   useRoute();
-
+  const fetchKhoaHocAPI = async () => {
+    const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
+    return data.content || []; // Xử lý khi không có dữ liệu
+  };
   // Fetch course data
   const queryResult: UseQueryResult<KhoaHocData[]> = useQuery<KhoaHocData[]>({
     queryKey: ["KhoaHoc"],
@@ -88,6 +92,11 @@ const SectionOurRoom: React.FC = () => {
                       {KhoaHoc.MoTaKhoaHoc}
                     </NavLink>
                   </p>
+                  <button>
+                  <NavLink to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`}>
+                      View Details
+                  </NavLink>
+                  </button>
                 </div>
               </div>
             </div>

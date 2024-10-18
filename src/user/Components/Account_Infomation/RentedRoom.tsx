@@ -74,7 +74,7 @@ const RegisteredCourse: React.FC<RegisteredCourseProps> = ({ userCourseData }) =
     });
 
     // Navigate to the course detail page
-    navigate(`/detail/${queryResultCourseByID.data?.IDKhoaHoc}`);
+    navigate(`/khoa-hoc/xem-chi-tiet/:id/${queryResultCourseByID.data?.IDKhoaHoc}`);
   };
 
   return (
