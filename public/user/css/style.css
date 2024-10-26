@@ -10280,21 +10280,21 @@ h5,
   font-size: 24px;
 }
 
-.room {
+.Course {
   display: block;
   width: 100%;
   margin-bottom: 30px;
 }
 @media (max-width: 991.98px) {
-  .room {
+  .Course {
     margin-bottom: 30px;
   }
 }
-.room .img {
+.Course .img {
   display: block;
   height: 250px;
 }
-.room .icon {
+.Course .icon {
   width: 60px;
   height: 60px;
   background: #fff;
@@ -10309,31 +10309,31 @@ h5,
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-.room .icon span {
+.Course .icon span {
   color: #000000;
 }
-.room:hover .icon {
+.Course:hover .icon {
   opacity: 1;
 }
-.room .text {
+.Course .text {
   border: 1px solid #e6e6e6;
   border-top: 1px solid transparent;
   background: #fff;
   position: relative;
 }
-.room .text h3 {
+.Course .text h3 {
   font-size: 22px;
   margin-bottom: 5px;
 }
-.room .text h3 a {
+.Course .text h3 a {
   color: #000000;
 }
-.room .text span.price {
+.Course .text span.price {
   font-size: 26px;
   color: #000000;
   position: relative;
 }
-.room .text span.price:after {
+.Course .text span.price:after {
   position: absolute;
   bottom: -3px;
   left: 0;
@@ -10343,45 +10343,45 @@ h5,
   content: "";
   background: #d1ba90;
 }
-.room .text span.per {
+.Course .text span.per {
   color: #b3b3b3;
 }
-.room .text .btn-custom {
+.Course .text .btn-custom {
   color: #000000;
 }
-.room .text ul.list {
+.Course .text ul.list {
   padding: 0;
 }
-.room .text ul.list li {
+.Course .text ul.list li {
   list-style: none;
   color: #000000;
   font-size: 14px;
 }
-.room .text ul.list li span {
+.Course .text ul.list li span {
   color: #8d703b;
 }
 
-.room-img {
+.Course-img {
   height: 400px;
   margin-bottom: 2em;
 }
 
-.room-single h2 {
+.Course-single h2 {
   font-size: 28px;
 }
 
-.room-single .loc {
+.Course-single .loc {
   margin-right: 10px;
 }
-.room-single .loc a {
+.Course-single .loc a {
   color: #999999;
 }
 
-.room-single ul {
+.Course-single ul {
   margin: 0;
   padding: 0;
 }
-.room-single ul li {
+.Course-single ul li {
   list-style: none;
   margin-bottom: 10px;
 }
@@ -10812,7 +10812,7 @@ textarea.form-control {
 }
 
 .insta-img,
-.room-img,
+.Course-img,
 .hero-wrap,
 .img,
 .blog-img,
@@ -11930,4 +11930,27 @@ textarea.form-control {
   text-overflow: ellipsis;
   -webkit-line-clamp: 1; /* Limit to 1 line */
   white-space: nowrap;
+}
+
+.registered-course {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.registered-course img {
+  width: 100%; 
+  max-height: 150px;
+  object-fit: cover;
+}
+
+.registered-course h3 {
+  margin: 10px 0;
+}
+
+.registered-course p {
+  margin: 5px 0;
 }

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../Antd/Loading";
 import RangeSliderComponent from "./RangeSliderComponent";
 import { BASE_URL } from "../../../util/fetchfromAPI";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface KhoaHocData {
@@ -17,16 +17,20 @@ interface KhoaHocData {
   GiamGia: number;
   GiaTien: string;
   LoaiKhoaHoc: string;
+  IDDanhMuc: string; 
+  XepLoai: string;
 }
 
 const KhoaHocComponent: React.FC = () => {
-  const [selectedTag, setSelectedLocation] = useState<string>("");
+  const [selectedType, setSelectedLocation] = useState<string>("");
   const [priceRange, setPriceRange] = useState<number[]>([0, 100]);
-  const navigate = useNavigate(); // Khởi tạo useNavigate
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); 
+  const navigate = useNavigate();
 
   const fetchKhoaHocAPI = async () => {
     const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
-    return data.content; // Xử lý khi không có dữ liệu
+    return data.content;
   };
 
   const { data: KhoaHocList = [], isLoading, isError } = useQuery<KhoaHocData[]>({
@@ -42,11 +46,17 @@ const KhoaHocComponent: React.FC = () => {
     setPriceRange(range);
   };
 
-  // Hàm xử lý chuyển hướng đến trang chi tiết khóa học
-  const handleViewDetails = (id: number) => {
-    navigate(`/khoa-hoc/xem-chi-tiet/${id}`); // Chuyển hướng đến trang chi tiết
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value); 
+  };
+
+  const handleViewDetails = (id: number) => {
+    navigate(`/khoa-hoc/xem-chi-tiet/${id}`);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -56,6 +66,15 @@ const KhoaHocComponent: React.FC = () => {
     return <div>Error loading courses.</div>;
   }
 
+  // Lọc danh sách khóa học theo tên, loại khóa học, và danh mục đã chọn
+  const filteredKhoaHocList = KhoaHocList.filter((KhoaHoc) => {
+    return (
+      KhoaHoc.TenKhoaHoc.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedType === "" || KhoaHoc.LoaiKhoaHoc === selectedType) &&
+      (selectedCategory === "" || KhoaHoc.IDDanhMuc.toString() === selectedCategory) 
+    );
+  });
+
   return (
     <section className="ftco-section bg-light">
       <div className="container">
@@ -64,27 +83,57 @@ const KhoaHocComponent: React.FC = () => {
             <div className="sidebar-wrap bg-light ftco-animate">
               <form action="#">
                 <div className="fields">
-                  <h3 className="heading mb-4">Advanced Search</h3>
+                  <h3 className="heading mb-4">Tìm kiếm nâng cao</h3>
+
+                  <span>Tìm kiếm theo tên</span>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                    />
+                  </div>
+                  <span>Loại khóa học</span> 
                   <div className="form-group">
                     <div className="select-wrap one-third">
-                      <div className="icon">
-                        <span className="ion-ios-arrow-down" />
-                      </div>
                       <select
                         className="form-control"
-                        value={selectedTag}
+                        value={selectedType}
                         onChange={handleTagChange}
                       >
-                        <option value="">All Khoa Học</option>
-                        <option value="Java">Java</option>
-                        <option value="Python">Python</option>
-                        <option value="Unity">Unity</option>
-                        <option value="Reactjs">Reactjs</option>
-                        <option value="C++">C++</option>
+                        <option value="">Tất cả loại khóa học</option>
+                        <option value="mien_phi">Miễn phí</option>
+                        <option value="tra_phi">Trả phí</option>       
                       </select>
                     </div>
                   </div>
+                  <span>Danh mục khóa học</span>
+                  {/* Thêm ô chọn danh mục */}
                   <div className="form-group">
+                    <div className="select-wrap one-third">
+                      <select
+                        className="form-control"
+                        value={selectedCategory}
+                        onChange={handleCategoryChange}
+                      >
+                        <option value="">Tất cả danh mục</option>
+                        <option value="1">Lập trình Java</option>
+                        <option value="2">Lập trình Python</option>
+                        <option value="3">Phát triển Web</option>
+                        <option value="4">Lập trình C#</option>
+                        <option value="5">Khoa học Dữ liệu</option>
+                        <option value="6">Trí tuệ Nhân tạo</option>                    
+                        <option value="7">Phát triển Ứng dụng Di động</option>
+                        <option value="8">An ninh Mạng</option>
+                        <option value="9">Phân tích Dữ liệu</option>
+                        <option value="10">Máy học</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <span>Tầm giá</span>
                     <RangeSliderComponent onChange={handlePriceRangeChange} />
                   </div>
                 </div>
@@ -94,10 +143,14 @@ const KhoaHocComponent: React.FC = () => {
           <div className="col-lg-9">
             <div className="khoa-hoc-list">
               <div className="row">
-                {KhoaHocList.map((KhoaHoc) => (
+                {filteredKhoaHocList.map((KhoaHoc) => (
                   <div className="col-md-4" key={KhoaHoc.IDKhoaHoc}>
                     <div className="khoa-hoc-item">
-                      <img src={KhoaHoc.HinhAnh} alt={KhoaHoc.TenKhoaHoc} />
+                      <img
+                        src={KhoaHoc.HinhAnh}
+                        alt={KhoaHoc.TenKhoaHoc}
+                        style={{ width: "100%", height: "auto", maxHeight: "200px" }}
+                      />
                       <h3>{KhoaHoc.TenKhoaHoc}</h3>
                       <p>{KhoaHoc.MoTaKhoaHoc}</p>
                       <p>
@@ -112,9 +165,12 @@ const KhoaHocComponent: React.FC = () => {
                       <p>
                         <strong>Discount:</strong> {KhoaHoc.GiamGia}%
                       </p>
-                      <button 
-                        className="btn btn-primary" 
-                        onClick={() => handleViewDetails(KhoaHoc.IDKhoaHoc)} // Gọi hàm khi nhấn nút
+                      <p>
+                        <strong>Type:</strong> {KhoaHoc.LoaiKhoaHoc}
+                      </p>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => handleViewDetails(KhoaHoc.IDKhoaHoc)}
                       >
                         View Details
                       </button>

@@ -1,60 +1,55 @@
-import React, { useState, useEffect } from "react";
-import Profile from "./Profile";
-import "../../../css/UserProfilePage.css";
+import { useQuery } from "@tanstack/react-query";
+import { BASE_URL, getRegisteredCoursesAPI } from "../../../util/fetchfromAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { Pagination } from "antd";
+import Profile from "./Profile";
+import RegisteredCourse from "./RegisteredCourse";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-interface User {
-  IDNguoiDung: number;
-  TenDangNhap: string;
-  Email: string;
-  MatKhau: string;
-  HoTen: string;
-  GioiTinh: boolean;
-  SDT: string;
-  Role: string;
-  AnhDaiDien?: string;
-}
-
-export interface UserReducerType {
-  userLogin: UserLogin | null;
-}
-
-export interface UserLogin {
-  user: User;
-  token: string;
+interface KhoaHocData {
+  IDKhoaHoc: string;
+  TenKhoaHoc: string;
+  MoTaKhoaHoc: string;
+  HinhAnh: string;
+  Video: string;
+  NgayDang: string;
+  LuotXem: number;
+  BiDanh: string;
+  MaNhom: string;
+  SoLuongHocVien: number;
+  GiamGia: number;
+  GiaTien: string;
 }
 
 const UserProfilePage: React.FC = () => {
   const { userLogin } = useSelector((state: RootState) => state.userReducer);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  // Add logging to check userLogin value
-  useEffect(() => {
-    console.log("userLogin:", userLogin);
-  }, [userLogin]);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  // Gán giá trị mặc định cho userId
+  const userId = userLogin?.user?.IDNguoiDung ?? 0; // Nếu không có IDNguoiDung, gán là 0
+  const getRegisteredCoursesAPI = async (userId: number, p0: string,) => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${BASE_URL}/khoa-hoc-dang-ky?userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log('Khóa học đã đăng ký trả về:', response.data);
+    return response.data; // Trả về danh sách khóa học đã đăng ký
   };
 
-  // Handle case when user is not logged in
+  // Fetch registered courses
+  const { data: registeredCourses = [], isLoading, isError } = useQuery({
+    queryKey: ["registeredCourses", userId],
+    queryFn: () => getRegisteredCoursesAPI(userId, userLogin?.token!), // Sử dụng token
+    enabled: !!userLogin, // Chỉ chạy nếu userLogin không phải null
+  });
+
   if (!userLogin) {
     return <div>User is not logged in. Please log in to access this page.</div>;
   }
 
-  const userData: User = {
-    IDNguoiDung: userLogin.user?.IDNguoiDung,
-    TenDangNhap: userLogin.user?.TenDangNhap,
-    Email: userLogin.user?.Email,
-    MatKhau: userLogin.user?.MatKhau,
-    HoTen: userLogin.user?.HoTen,
-    GioiTinh: userLogin.user?.GioiTinh,
-    SDT: userLogin.user?.SDT,
-    Role: userLogin.user?.Role,
-    AnhDaiDien: userLogin.user?.AnhDaiDien,
-  };
+  const userData = { ...userLogin.user };
 
   return (
     <div className="user-profile-page container">
@@ -63,16 +58,28 @@ const UserProfilePage: React.FC = () => {
           <Profile user={userData} />
         </div>
         <div className="col-md-8">
-          <div className="rented-rooms">
-            <h2>Course List</h2>
-            {/* Add course list content here */}
+          <div className="registered-courses">
+            <h2>Khóa Học Đã Đăng Ký</h2>
+            {isLoading && <p>Đang tải khóa học...</p>}
+            {isError && <p>Đã có lỗi xảy ra khi tải khóa học.</p>}
+            {Array.isArray(registeredCourses) && registeredCourses.length > 0 ? (
+              registeredCourses.map((course: KhoaHocData) => (
+                <RegisteredCourse 
+                  key={course.IDKhoaHoc.toString()} 
+                  userCourseData={{
+                    IDKhoaHoc: course.IDKhoaHoc.toString(),
+                    TenKhoaHoc: course.TenKhoaHoc,
+                    MoTaKhoaHoc: course.MoTaKhoaHoc,
+                    HinhAnh: course.HinhAnh,
+                    SoLuongHocVien: course.SoLuongHocVien,
+                    GiaTien: course.GiaTien,
+                  }}
+                />
+              ))
+            ) : (
+              <p>Chưa có khóa học nào được đăng ký.</p>
+            )}
           </div>
-          <Pagination
-            align="center"
-            current={currentPage}
-            pageSize={6}
-            onChange={handlePageChange}
-          />
         </div>
       </div>
     </div>

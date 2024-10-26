@@ -22,11 +22,11 @@ const UserMenu: React.FC = () => {
   };
 
   const handleManage = () => {
-    navigate("/info-user"); // Navigate to user info page
+    navigate("/user/profile"); // Navigate to user info page
   };
 
   const handleManageAdmin = () => {
-    navigate("/admin/table-user"); // Navigate to admin management page
+    navigate("/user/profile"); // Navigate to admin management page
   };
 
   const handleTabSwitch = (tab: "login" | "register") => {
@@ -42,7 +42,7 @@ const UserMenu: React.FC = () => {
             Account Information
           </NavLink>
           {userLogin.user.Role === "admin" && (
-            <NavLink className="dropdown-item" onClick={handleManageAdmin} to={"/admin/table-user"}>
+            <NavLink className="dropdown-item" onClick={handleManageAdmin} to={"/user/profile"}>
               Manage Admin
             </NavLink>
           )}
@@ -89,7 +89,7 @@ const UserMenu: React.FC = () => {
           style={{ cursor: "pointer" }}
         >
           <i className="fa fa-user" aria-hidden="true">
-            <span style={{ paddingLeft: "10px" }}>{userLogin.user.HoTen}</span>
+            <span style={{ paddingLeft: "10px" }}>{userLogin.user.TenDangNhap}</span>
           </i>
         </div>
       );

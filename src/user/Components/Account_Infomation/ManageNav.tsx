@@ -4,7 +4,7 @@ const Account_Infomation: React.FC = () => {
   return (
     <div
       className="hero-wrap"
-      style={{ backgroundImage: 'url("user/images/bg_1.jpg")' }}
+      style={{ backgroundImage: 'url("user/images/test.png")' }}
     >
       <div className="overlay" />
       <div className="container">

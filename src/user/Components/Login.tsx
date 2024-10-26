@@ -46,7 +46,7 @@ const Login: React.FC = () => {
           localStorage.setItem("token", token);
           
           setMessage("Login successful!");
-          navigate("/khoa-hoc"); 
+          navigate("#"); 
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {

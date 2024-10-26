@@ -14,7 +14,7 @@ const Header: React.FC = () => {
         <div className="container">
           <NavLink className="navbar-brand" to="/">
             H&H
-          </NavLink> 
+          </NavLink> {" "}
           <button
             className="navbar-toggler"
             type="button"
@@ -28,10 +28,10 @@ const Header: React.FC = () => {
           </button>
           <div className="collapse navbar-collapse" id="ftco-nav">
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item active">
-                <a href="/" className="nav-link">
-                  Home
-                </a>
+              <li className="nav-item ">
+              <span className="nav-link">
+                  <NavLink to="/">Home</NavLink>
+                </span>{" "}
               </li>
               <li className="nav-item">
                 <a href="#" className="nav-link">
@@ -44,9 +44,9 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Pricing
-                </a>
+                <NavLink to="/khoa-hoc" className="nav-link">
+                  Courses
+                </NavLink>
               </li>
               <li className="nav-item">
                 <a href="#" className="nav-link">
