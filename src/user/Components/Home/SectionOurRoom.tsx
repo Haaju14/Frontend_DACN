@@ -54,7 +54,7 @@ const SectionOurRoom: React.FC = () => {
       <div className="container">
         <div className="row justify-content-center mb-5 pb-3">
           <div className="col-md-7 heading-section text-center ftco-animate">
-            <h2 className="mb-4">Courses</h2> {/* Tiêu đề chung */}
+            <h2 className="mb-4">Porpular Courses</h2> {/* Tiêu đề chung */}
           </div>
         </div>
         
@@ -98,6 +98,7 @@ const SectionOurRoom: React.FC = () => {
               </div>
             </div>
           ))}
+          
         </div>
 
         <div className="row justify-content-center mb-5 pb-3">

@@ -28,6 +28,9 @@ const UserMenu: React.FC = () => {
   const handleManageAdmin = () => {
     navigate("/user/profile"); // Navigate to admin management page
   };
+  const handleFavorites = () =>{
+    navigate("/favorites");
+  };
 
   const handleTabSwitch = (tab: "login" | "register") => {
     const targetTab = document.querySelector(`#${tab}-tab`) as HTMLAnchorElement;
@@ -46,6 +49,12 @@ const UserMenu: React.FC = () => {
               Manage Admin
             </NavLink>
           )}
+          <NavLink className="dropdown-item" onClick={handleFavorites} to={"/favorites"}>
+            Favorites Course
+          </NavLink>
+          <NavLink className="dropdown-item" onClick={handleFavorites} to={"/giangvien"}>
+            Favorites Teacher
+          </NavLink>
           <NavLink className="dropdown-item" onClick={handleLogOut} to={"/"}>
             Log Out
           </NavLink>

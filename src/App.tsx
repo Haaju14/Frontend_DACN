@@ -18,6 +18,7 @@ import AdminTemplate from "./admin/templates/AdminTemplate";
 // import TableUser from "./admin/pagesAdmin/table/TableUser.tsx";
 import NotFoundPage from "./pageGlobal/NotFoundPage.tsx";
 import KhoaHocPage from "./user/Pages/KhoaHocPage.tsx";
+import FavoritesPage from "./user/Pages/FavoritesPage.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -30,15 +31,32 @@ function App() {
           {/* User Routes */}
           <Route path="" element={<HomeTemplate />}>
             <Route index element={<HomePage />}></Route>
-            <Route path="khoa-hoc">
-              <Route path="" element={<KhoaHocPage />}></Route>
-              <Route path=":locate" element={<KhoaHocPage />}></Route>
+            <Route 
+            path="khoa-hoc">
+              <Route 
+              path="" element={<KhoaHocPage />}>
+              </Route>
             </Route>
-            <Route path="/khoa-hoc/xem-chi-tiet/">
-              <Route path=":id" element={<DetailPage />}></Route>
+
+            <Route 
+              path="/khoa-hoc/xem-chi-tiet/">
+              <Route 
+              path=":id" element={<DetailPage />}>               
+              </Route>
             </Route>
-            <Route path="/user/profile" element={<ManagePage />}></Route>
+
+            <Route 
+              path="/user/profile" element={<ManagePage />}>
+            </Route>
+            <Route
+              path="/favorites" element={<FavoritesPage/>} >
+            </Route>
+            <Route
+              path="/giangvien" element={<ManagePage/>} >
+            </Route>
+            
           </Route>
+          
           {/* Admin Routes
           <Route path="admin" element={<AdminTemplate />}>
             <Route path="table-room" element={<TableRoom />} />

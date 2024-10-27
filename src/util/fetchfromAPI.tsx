@@ -41,11 +41,24 @@ export const UserAPI = async (p0: {
     throw error; // Rethrow the error for handling in the calling function
   }
 };
+
 export const getUser = async () => {
   const response = await axios.get(`${BASE_URL}/user/profile`,);
   return response.data;
 };
-// update profile 
+
+// quên mật khẩu
+export const forgotPasswordAPI = async (email: any) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/forgot-password`, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error sending forgot password request:", error);
+    throw error; 
+  }
+};
 
 //lấy danh sách khóa học
 export const KhoaHocAPI = async (buyCourse?: any) => {
@@ -95,7 +108,7 @@ export const getPayCoursesAPI = async () => {
 };
 
 // lấy danh sách khóa học top ( 1 -5 )
-export const getTopCourses = async (token: string) => {
+export const getHotCourses = async (token: string) => {
   try {
     const response = await axios.get(`${BASE_URL}/khoa-hoc/top`, {
       headers: {
@@ -105,15 +118,23 @@ export const getTopCourses = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching top courses:', error);
-    // Có thể ném lỗi lên để xử lý ở nơi gọi hàm
     throw error;
   }
 };
 
 // lấy danh sach khóa học trending (6-10)
-export const getTrendingCourses = async () => {
-  const response = await axios.get(`${BASE_URL}/khoa-hoc/trending`);
-  return response.data;
+export const getTrendingCourses = async (token: string) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/khoa-hoc/trending`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching top courses:', error);
+    throw error;
+  }
 };
 
 // Xem chi tiết khóa học theo IDKhoaHoc
@@ -125,3 +146,49 @@ export const getCourseDetailAPI = async (id: string, token: string) => {
   });
   return response.data;
 };
+
+// Thêm khóa học yêu thích
+export const postFavoritesCourseAPI = async (id:number, token: string) => {
+  const response = await axios.post(`${BASE_URL}/favorite/add/${id}`,{
+    headers: {
+      Authorzation: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+// bỏ khóa học yêu thích
+export const deleteFavoritesCourseAPI = async (id:number, token: string) => {
+  const response = await axios.delete(`${BASE_URL}/favorites/${id}`,{
+    headers: {
+      Authorzation: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+//lấy danh sách khóa học yêu thích theo người dùng
+export const getFavoritesCourseAPI = async (token: string) => {
+  try {
+    // Gọi API để lấy khóa học đã yêu thích
+    const response = await axios.get(`${BASE_URL}/favorites`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log('Khóa học đã yêu thích trả về:', response.data); // Log dữ liệu trả về
+    return response.data; // Trả về danh sách khóa học đã yêu thích
+  } catch (error: any) {
+    console.error('Lỗi khi gọi API lấy khóa học đã yêu thích:', error.response || error.message);
+    throw new Error(error.response ? error.response.data.message : error.message);
+  }
+};
+// lấy bình luận theo ID khóa học
+export const getCommentIdCourse = async (id:number, token: string) => {
+  const response = await axios.get(`${BASE_URL}/binh-luan/get/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}

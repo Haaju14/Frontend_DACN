@@ -1,51 +1,51 @@
-import React, { useState } from "react";
-import "../../../css/Amenities.css";
+// import React, { useState } from "react";
+// import "../../../css/Amenities.css";
 
-const Amenities: React.FC = () => {
-  const [showMore, setShowMore] = useState(false);
+// const Amenities: React.FC = () => {
+//   const [showMore, setShowMore] = useState(false);
 
-  const toggleShowMore = () => {
-    setShowMore(!showMore);
-  };
+//   const toggleShowMore = () => {
+//     setShowMore(!showMore);
+//   };
 
-  return (
-    <div className="amenities">
-      <h3 className="mb-4">HashTag</h3>
-      <div className="amenities-list">
-        <div className="amenity-item">
-          <span className="icon">📶</span>
-          <span>Wifi</span>
-        </div>
-        <div className="amenity-item">
-          <span className="icon">🅿️</span>
-          <span>Parking</span>
-        </div>
-        <div className="amenity-item">
-          <span className="icon">🏊‍♂️</span>
-          <span>Pool</span>
-        </div>
-        {showMore && (
-          <>
-            <div className="amenity-item">
-              <span className="icon">📺</span>
-              <span>Tivi</span>
-            </div>
-            <div className="amenity-item">
-              <span className="icon">🧹</span>
-              <span>Iron</span>
-            </div>
-            <div className="amenity-item">
-              <span className="icon">🧺</span>
-              <span>Washing machine</span>
-            </div>
-          </>
-        )}
-      </div>
-      <button onClick={toggleShowMore}>
-        {showMore ? "Hide HashTag" : "Show more HashTag"}
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="amenities">
+//       <h3 className="mb-4">HashTag</h3>
+//       <div className="amenities-list">
+//         <div className="amenity-item">
+//           <span className="icon">📶</span>
+//           <span>Wifi</span>
+//         </div>
+//         <div className="amenity-item">
+//           <span className="icon">🅿️</span>
+//           <span>Parking</span>
+//         </div>
+//         <div className="amenity-item">
+//           <span className="icon">🏊‍♂️</span>
+//           <span>Pool</span>
+//         </div>
+//         {showMore && (
+//           <>
+//             <div className="amenity-item">
+//               <span className="icon">📺</span>
+//               <span>Tivi</span>
+//             </div>
+//             <div className="amenity-item">
+//               <span className="icon">🧹</span>
+//               <span>Iron</span>
+//             </div>
+//             <div className="amenity-item">
+//               <span className="icon">🧺</span>
+//               <span>Washing machine</span>
+//             </div>
+//           </>
+//         )}
+//       </div>
+//       <button onClick={toggleShowMore}>
+//         {showMore ? "Hide HashTag" : "Show more HashTag"}
+//       </button>
+//     </div>
+//   );
+// };
 
-export default Amenities;
+// export default Amenities;

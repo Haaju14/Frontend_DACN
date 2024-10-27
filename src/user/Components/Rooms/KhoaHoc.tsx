@@ -5,6 +5,8 @@ import RangeSliderComponent from "./RangeSliderComponent";
 import { BASE_URL } from "../../../util/fetchfromAPI";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { message } from "antd";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons"; // Import biểu tượng trái tim
 
 interface KhoaHocData {
   IDKhoaHoc: number;
@@ -17,7 +19,7 @@ interface KhoaHocData {
   GiamGia: number;
   GiaTien: string;
   LoaiKhoaHoc: string;
-  IDDanhMuc: string; 
+  IDDanhMuc: string;
   XepLoai: string;
 }
 
@@ -25,7 +27,8 @@ const KhoaHocComponent: React.FC = () => {
   const [selectedType, setSelectedLocation] = useState<string>("");
   const [priceRange, setPriceRange] = useState<number[]>([0, 100]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); 
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [favoriteCourses, setFavoriteCourses] = useState<number[]>([]);
   const navigate = useNavigate();
 
   const fetchKhoaHocAPI = async () => {
@@ -51,11 +54,32 @@ const KhoaHocComponent: React.FC = () => {
   };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(event.target.value); 
+    setSelectedCategory(event.target.value);
   };
 
   const handleViewDetails = (id: number) => {
     navigate(`/khoa-hoc/xem-chi-tiet/${id}`);
+  };
+
+  const postFavoritesCourseAPI = async (id: number) => {
+    if (favoriteCourses.includes(id)) {
+      message.warning("Khóa học này đã được thêm vào yêu thích.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${BASE_URL}/favorite/add/${id}`,
+        { IDNguoiDung: 1, IDKhoaHoc: id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setFavoriteCourses((prev) => [...prev, id]);
+      message.success("Đã thêm khóa học vào yêu thích.");
+    } catch (error) {
+      console.error("Error adding favorite course:", error);
+      message.error("Có lỗi xảy ra khi thêm vào yêu thích.");
+    }
   };
 
   if (isLoading) {
@@ -66,12 +90,11 @@ const KhoaHocComponent: React.FC = () => {
     return <div>Error loading courses.</div>;
   }
 
-  // Lọc danh sách khóa học theo tên, loại khóa học, và danh mục đã chọn
   const filteredKhoaHocList = KhoaHocList.filter((KhoaHoc) => {
     return (
       KhoaHoc.TenKhoaHoc.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedType === "" || KhoaHoc.LoaiKhoaHoc === selectedType) &&
-      (selectedCategory === "" || KhoaHoc.IDDanhMuc.toString() === selectedCategory) 
+      (selectedCategory === "" || KhoaHoc.IDDanhMuc.toString() === selectedCategory)
     );
   });
 
@@ -94,7 +117,7 @@ const KhoaHocComponent: React.FC = () => {
                       onChange={handleSearchChange}
                     />
                   </div>
-                  <span>Loại khóa học</span> 
+                  <span>Loại khóa học</span>
                   <div className="form-group">
                     <div className="select-wrap one-third">
                       <select
@@ -104,12 +127,11 @@ const KhoaHocComponent: React.FC = () => {
                       >
                         <option value="">Tất cả loại khóa học</option>
                         <option value="mien_phi">Miễn phí</option>
-                        <option value="tra_phi">Trả phí</option>       
+                        <option value="tra_phi">Trả phí</option>
                       </select>
                     </div>
                   </div>
                   <span>Danh mục khóa học</span>
-                  {/* Thêm ô chọn danh mục */}
                   <div className="form-group">
                     <div className="select-wrap one-third">
                       <select
@@ -123,7 +145,7 @@ const KhoaHocComponent: React.FC = () => {
                         <option value="3">Phát triển Web</option>
                         <option value="4">Lập trình C#</option>
                         <option value="5">Khoa học Dữ liệu</option>
-                        <option value="6">Trí tuệ Nhân tạo</option>                    
+                        <option value="6">Trí tuệ Nhân tạo</option>
                         <option value="7">Phát triển Ứng dụng Di động</option>
                         <option value="8">An ninh Mạng</option>
                         <option value="9">Phân tích Dữ liệu</option>
@@ -154,7 +176,7 @@ const KhoaHocComponent: React.FC = () => {
                       <h3>{KhoaHoc.TenKhoaHoc}</h3>
                       <p>{KhoaHoc.MoTaKhoaHoc}</p>
                       <p>
-                        <strong>Price:</strong> {KhoaHoc.GiaTien}
+                        <strong>Price:</strong> {KhoaHoc.GiaTien} VND
                       </p>
                       <p>
                         <strong>Posted On:</strong> {KhoaHoc.NgayDang}
@@ -168,12 +190,24 @@ const KhoaHocComponent: React.FC = () => {
                       <p>
                         <strong>Type:</strong> {KhoaHoc.LoaiKhoaHoc}
                       </p>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => handleViewDetails(KhoaHoc.IDKhoaHoc)}
-                      >
-                        View Details
-                      </button>
+                      <div className="button-group" style={{ display: "flex", justifyContent: "space-between" }}>
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => handleViewDetails(KhoaHoc.IDKhoaHoc)}
+                        >
+                          View Details
+                        </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => postFavoritesCourseAPI(KhoaHoc.IDKhoaHoc)}
+                        >
+                          {favoriteCourses.includes(KhoaHoc.IDKhoaHoc) ? (
+                            <HeartFilled style={{ color: "red" }} />
+                          ) : (
+                            <HeartOutlined />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
+import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword
 import UserMenu from "./UserMenu";
 import { NavLink } from "react-router-dom";
 
 const Header: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("login"); // State để quản lý tab hiện tại
+
+  const handleForgotPasswordClick = () => {
+    setActiveTab("forgot-password"); // Chuyển sang tab quên mật khẩu
+  };
+
   return (
     <>
       <nav
@@ -14,7 +21,7 @@ const Header: React.FC = () => {
         <div className="container">
           <NavLink className="navbar-brand" to="/">
             H&H
-          </NavLink> {" "}
+          </NavLink>{" "}
           <button
             className="navbar-toggler"
             type="button"
@@ -28,8 +35,8 @@ const Header: React.FC = () => {
           </button>
           <div className="collapse navbar-collapse" id="ftco-nav">
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item ">
-              <span className="nav-link">
+              <li className="nav-item">
+                <span className="nav-link">
                   <NavLink to="/">Home</NavLink>
                 </span>{" "}
               </li>
@@ -88,26 +95,24 @@ const Header: React.FC = () => {
               <ul className="nav nav-tabs" id="authTab" role="tablist">
                 <li className="nav-item">
                   <a
-                    className="nav-link active"
+                    className={`nav-link ${activeTab === "login" ? "active" : ""}`}
                     id="login-tab"
-                    data-toggle="tab"
-                    href="#login"
+                    onClick={() => setActiveTab("login")}
                     role="tab"
                     aria-controls="login"
-                    aria-selected="true"
+                    aria-selected={activeTab === "login"}
                   >
                     Login
                   </a>
                 </li>
                 <li className="nav-item">
                   <a
-                    className="nav-link"
+                    className={`nav-link ${activeTab === "register" ? "active" : ""}`}
                     id="register-tab"
-                    data-toggle="tab"
-                    href="#register"
+                    onClick={() => setActiveTab("register")}
                     role="tab"
                     aria-controls="register"
-                    aria-selected="false"
+                    aria-selected={activeTab === "register"}
                   >
                     Register
                   </a>
@@ -115,26 +120,38 @@ const Header: React.FC = () => {
               </ul>
               <div className="tab-content" id="authTabContent">
                 <div
-                  className="tab-pane fade show active"
+                  className={`tab-pane fade ${activeTab === "login" ? "show active" : ""}`}
                   id="login"
                   role="tabpanel"
                   aria-labelledby="login-tab"
                 >
-                  {/* Login Form */}
-
                   <Login />
+                  {/* Nút "Quên mật khẩu?" chỉ hiện ở tab Login */}
+                  <div className="text-right mt-2">
+                    <NavLink to="#" onClick={handleForgotPasswordClick} className="text-primary">
+                      Quên mật khẩu?
+                    </NavLink>
+                  </div>
                 </div>
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane fade ${activeTab === "register" ? "show active" : ""}`}
                   id="register"
                   role="tabpanel"
                   aria-labelledby="register-tab"
                 >
-                  {/* Register Form */}
                   <Register />
+                </div>
+                <div
+                  className={`tab-pane fade ${activeTab === "forgot-password" ? "show active" : ""}`}
+                  id="forgot-password"
+                  role="tabpanel"
+                  aria-labelledby="forgot-password-tab"
+                >
+                  <ForgotPassword />
                 </div>
               </div>
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"

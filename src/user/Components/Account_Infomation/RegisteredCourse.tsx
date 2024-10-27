@@ -39,7 +39,7 @@ const RegisteredCourse: React.FC<RegisteredCourseProps> = ({ userCourseData }) =
 
   const getRegisteredCoursesAPI = async (userId: string): Promise<KhoaHocData[]> => {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`${BASE_URL}/khoa-hoc-dang-ky?userId=${userId}`, {
+    const response = await axios.get(`${BASE_URL}/khoa-hoc-dang-ky/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

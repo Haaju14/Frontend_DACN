@@ -104,12 +104,14 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             <span className="badge badge-success mb-2">
               Thành tựu
             </span>
-            <span className="badge badge-primary">Email address</span>
+            <span className="badge badge-primary">Học viên chăm chỉ</span>
+            <span className="badge badge-primary">Học viên nhiều đóng góp</span>
+            <span className="badge badge-primary">Học viên chăm chỉ</span>
           </div>
         </div>
         <div className="profile-info mt-3">
-          <h2>Xin chào tôi là  {userData.TenDangNhap}</h2>
-          <p>Bắt đầu tham gia vào 2024</p>
+          <h2>Hello, I'm  {userData.TenDangNhap}</h2>
+          <p>Join in 2024</p>
           <button className="btn btn-outline-primary" onClick={() => setShowModal(true)}>
             Edit profile
           </button>
