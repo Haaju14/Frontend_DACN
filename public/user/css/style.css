@@ -11954,3 +11954,216 @@ textarea.form-control {
 .registered-course p {
   margin: 5px 0;
 }
+
+.product-card {
+  width: 300px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  transition: transform 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.card-header i {
+  font-size: 18px;
+  color: #e74c3c;
+  cursor: pointer;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.product-title {
+  font-size: 1.5em;
+  margin: 0 0 10px;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.current-price {
+  font-size: 1.2em;
+  color: #333;
+  margin-right: 10px;
+}
+
+.original-price {
+  font-size: 1em;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.product-description {
+  font-size: 0.9em;
+  color: #666;
+  margin: 10px 0 20px;
+}
+
+.buy-now-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.buy-now-btn:hover {
+  background-color: #555;
+}
+.registered-courses {
+    margin: 20px 0;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd; /* Viền cho sản phẩm */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    margin-bottom: 20px; /* Khoảng cách giữa các thẻ sản phẩm */
+    overflow: hidden; /* Ẩn phần thừa */
+    transition: transform 0.3s; /* Hiệu ứng khi hover */
+}
+
+.product-card:hover {
+    transform: scale(1.02); /* Phóng to khi hover */
+}
+
+.product-image {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    height: auto; /* Đảm bảo tỉ lệ hình ảnh */
+}
+
+.card-content {
+    padding: 15px; /* Khoảng cách bên trong */
+}
+
+.product-title {
+    font-size: 1.5rem; /* Kích thước tiêu đề */
+    margin: 0; /* Xóa margin mặc định */
+    font-weight: bold; /* In đậm tiêu đề */
+}
+
+.product-price {
+    margin: 10px 0; /* Khoảng cách giữa giá và mô tả */
+}
+
+.current-price {
+    font-size: 1.2rem; /* Kích thước giá hiện tại */
+    color: #d9534f; /* Màu đỏ cho giá hiện tại */
+}
+
+.original-price {
+    text-decoration: line-through; /* Gạch ngang cho giá gốc */
+    color: #999; /* Màu xám cho giá gốc */
+}
+
+.product-description {
+    font-size: 0.9rem; /* Kích thước mô tả */
+    color: #555; /* Màu xám cho mô tả */
+}
+
+.card-body {
+    padding-top: 10px; /* Khoảng cách trên cho nút bấm */
+}
+
+.btn {
+    margin-top: 5px; /* Khoảng cách trên cho nút bấm */
+    flex: 1; /* Chiếm không gian đều giữa các nút */
+}
+
+.registered-courses {
+  margin: 20px 0;
+  max-width: 1000px; /* Điều chỉnh chiều rộng tối đa của phần này */
+  margin-left: auto; /* Căn giữa */
+  margin-right: auto; /* Căn giữa */
+}
+
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  margin-bottom: 20px; 
+  overflow: hidden; 
+  transition: transform 0.3s; 
+  width: 100%; /* Chiếm toàn bộ không gian cột */
+  max-width: 700px; /* Giảm chiều rộng tối đa xuống 700px */
+}
+
+
+
+.product-card:hover {
+  transform: scale(1.02); /* Phóng to khi hover */
+}
+
+.product-image {
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  height: auto; /* Đảm bảo tỉ lệ hình ảnh */
+}
+
+.card-content {
+  padding: 15px; /* Khoảng cách bên trong */
+}
+
+.product-title {
+  font-size: 1.5rem; /* Kích thước tiêu đề */
+  margin: 0; /* Xóa margin mặc định */
+  font-weight: bold; /* In đậm tiêu đề */
+}
+
+.product-price {
+  margin: 10px 0; /* Khoảng cách giữa giá và mô tả */
+}
+
+.current-price {
+  font-size: 1.2rem; /* Kích thước giá hiện tại */
+  color: #d9534f; /* Màu đỏ cho giá hiện tại */
+}
+
+.original-price {
+  text-decoration: line-through; /* Gạch ngang cho giá gốc */
+  color: #999; /* Màu xám cho giá gốc */
+}
+
+.product-description {
+  font-size: 0.9rem; /* Kích thước mô tả */
+  color: #555; /* Màu xám cho mô tả */
+}
+
+.card-body {
+  padding-top: 10px; /* Khoảng cách trên cho nút bấm */
+}
+
+.btn {
+  margin-top: 5px; /* Khoảng cách trên cho nút bấm */
+  flex: 1; /* Chiếm không gian đều giữa các nút */
+}
