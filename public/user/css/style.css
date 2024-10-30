@@ -10280,111 +10280,15 @@ h5,
   font-size: 24px;
 }
 
-.Course {
-  display: block;
-  width: 100%;
-  margin-bottom: 30px;
-}
+
 @media (max-width: 991.98px) {
   .Course {
     margin-bottom: 30px;
   }
 }
-.Course .img {
-  display: block;
-  height: 250px;
-}
-.Course .icon {
-  width: 60px;
-  height: 60px;
-  background: #fff;
-  opacity: 0;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -moz-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-}
-.Course .icon span {
-  color: #000000;
-}
-.Course:hover .icon {
-  opacity: 1;
-}
-.Course .text {
-  border: 1px solid #e6e6e6;
-  border-top: 1px solid transparent;
-  background: #fff;
-  position: relative;
-}
-.Course .text h3 {
-  font-size: 22px;
-  margin-bottom: 5px;
-}
-.Course .text h3 a {
-  color: #000000;
-}
-.Course .text span.price {
-  font-size: 26px;
-  color: #000000;
-  position: relative;
-}
-.Course .text span.price:after {
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 2px;
-  content: "";
-  background: #d1ba90;
-}
-.Course .text span.per {
-  color: #b3b3b3;
-}
-.Course .text .btn-custom {
-  color: #000000;
-}
-.Course .text ul.list {
-  padding: 0;
-}
-.Course .text ul.list li {
-  list-style: none;
-  color: #000000;
-  font-size: 14px;
-}
-.Course .text ul.list li span {
-  color: #8d703b;
-}
 
-.Course-img {
-  height: 400px;
-  margin-bottom: 2em;
-}
 
-.Course-single h2 {
-  font-size: 28px;
-}
 
-.Course-single .loc {
-  margin-right: 10px;
-}
-.Course-single .loc a {
-  color: #999999;
-}
-
-.Course-single ul {
-  margin: 0;
-  padding: 0;
-}
-.Course-single ul li {
-  list-style: none;
-  margin-bottom: 10px;
-}
 
 .ftco-social {
   padding: 0;
@@ -11956,17 +11860,16 @@ textarea.form-control {
 }
 
 .product-card {
-  width: 300px;
+  flex: 1 1 calc(33.333% - 16px); /* Mỗi thẻ chiếm 1/3 chiều rộng, trừ đi khoảng cách */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background-color: #fff;
-  font-family: Arial, sans-serif;
   transition: transform 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .card-header {
@@ -11997,20 +11900,21 @@ textarea.form-control {
 
 .product-price {
   display: flex;
-  align-items: center;
+  flex-direction: column; 
+  align-items: flex-start;
   margin: 10px 0;
-}
-
-.current-price {
-  font-size: 1.2em;
-  color: #333;
-  margin-right: 10px;
 }
 
 .original-price {
   font-size: 1em;
   color: #aaa;
   text-decoration: line-through;
+  margin-bottom: 5px; 
+}
+
+.current-price {
+  font-size: 1.2em;
+  color: #333;
 }
 
 .product-description {
@@ -12038,6 +11942,9 @@ textarea.form-control {
 }
 .registered-courses {
     margin: 20px 0;
+}
+.favorite-courses {
+  margin: 20px 0;
 }
 
 .product-card {
@@ -12167,3 +12074,211 @@ textarea.form-control {
   margin-top: 5px; /* Khoảng cách trên cho nút bấm */
   flex: 1; /* Chiếm không gian đều giữa các nút */
 }
+
+.favorite-courses {
+  margin: 20px 0;
+  max-width: 1000px; /* Điều chỉnh chiều rộng tối đa của phần này */
+  margin-left: auto; /* Căn giữa */
+  margin-right: auto; /* Căn giữa */
+}
+.course-grid {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép dòng mới khi không đủ chỗ */
+  gap: 16px; /* Khoảng cách giữa các thẻ */
+}
+
+/* Detail */
+/* Tổng thể cho trang chi tiết khóa học */
+.ftco-section {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column; 
+  padding: 60px 0;
+}
+
+.container {
+  max-width: 1500px; /* Tăng chiều rộng tối đa */
+  width: 100%; /* Chiều rộng tối đa */
+  padding: 0 20px; /* Thêm padding bên trái và bên phải */
+}
+
+.course-detail {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề khóa học */
+.course-detail h2 {
+  font-size: 26px;
+  color: #333;
+}
+
+/* Slider hình ảnh khóa học */
+.single-slider img {
+  border-radius: 8px;
+}
+
+/* Thông tin khóa học */
+.course-info {
+  margin-top: 20px;
+}
+
+/* Danh sách thông tin khóa học */
+.course-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.course-info li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Nút đăng ký khóa học */
+.btn-success {
+  background-color: #28a745;
+  border: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  transform: translateY(-3px); /* Nâng lên khi di chuột */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Phần bình luận */
+.comments-section {
+  margin-top: 40px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.comments-section h3 {
+  font-size: 22px;
+  color: #333;
+}
+
+/* Các bình luận */
+.comment-item {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0; 
+  animation: fadeIn 0.5s forwards; /* Thêm animation cho bình luận */
+}
+
+@keyframes fadeIn {
+  to {
+      opacity: 1;
+  }
+}
+
+.comment-item p {
+  margin: 0;
+}
+
+.comment-item strong {
+  color: #007bff;
+}
+
+.comment-item .text-muted {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Thông báo lỗi */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* ----------------------------- Bình luận ----------------------------- */
+.feedback-section {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center; 
+}
+
+.rating-buttons {
+  margin-bottom: 10px;
+  justify-content: center; 
+  display: flex; 
+}
+
+.rating-buttons .btn {
+  margin-right: 10px;
+}
+
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+/*------------------- Khóa Học -----------------------------*/
+.khoa-hoc-list {
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; /* Căn giữa nội dung */
+}
+
+.khoa-hoc-item {
+  flex: 0 1 calc(33.333% - 16px); 
+  margin: 8px; /* Giảm khoảng cách giữa các mục */
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  padding: 16px; 
+  background-color: #fff; 
+  display: flex; 
+  flex-direction: column; 
+  height: 100%; 
+  transition: transform 0.3s, box-shadow 0.3s; 
+  position: relative; 
+  min-width: 250px; /* Đặt chiều rộng tối thiểu để đảm bảo đẹp */
+  max-width: 400px; /* Đặt chiều rộng tối đa */
+}
+
+.khoa-hoc-item img {
+  border-radius: 8px; 
+  margin-bottom: 12px; 
+  object-fit: cover; 
+  height: 200px; 
+}
+
+.khoa-hoc-item h3,
+.khoa-hoc-item p {
+  flex: 1; 
+  margin: 0; 
+}
+
+.khoa-hoc-item:hover {
+  transform: translateY(-50px); /* Điều chỉnh hiệu ứng hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+}
+
+.button-group {
+  margin-top: auto; 
+}
+
+/* Tùy chọn: Giúp căn giữa nội dung trong trường hợp chỉ có một khóa học */
+@media (max-width: 768px) {
+  .khoa-hoc-item {
+    flex: 0 1 100%; /* Đặt thành 100% khi màn hình nhỏ */
+    max-width: none; /* Bỏ giới hạn chiều rộng tối đa */
+  }
+}
+

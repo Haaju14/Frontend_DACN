@@ -24,7 +24,6 @@ const SectionOurRoom: React.FC = () => {
     return data.content || []; // Xử lý khi không có dữ liệu
   };
 
-  // Fetch course data
   const queryResult: UseQueryResult<KhoaHocData[]> = useQuery<KhoaHocData[]>({
     queryKey: ["KhoaHoc"],
     queryFn: fetchKhoaHocAPI,
@@ -54,10 +53,10 @@ const SectionOurRoom: React.FC = () => {
       <div className="container">
         <div className="row justify-content-center mb-5 pb-3">
           <div className="col-md-7 heading-section text-center ftco-animate">
-            <h2 className="mb-4">Porpular Courses</h2> {/* Tiêu đề chung */}
+            <h2 className="mb-4">Popular Courses</h2>
           </div>
         </div>
-        
+  
         <div className="row">
           <div className="col-md-12 heading-section text-center ftco-animate">
             <h4 className="mb-4">Top Courses</h4>
@@ -66,7 +65,7 @@ const SectionOurRoom: React.FC = () => {
         <div className="row">
           {topCourses.map((KhoaHoc: KhoaHocData) => (
             <div key={KhoaHoc.IDKhoaHoc} className="col-sm col-md-6 col-lg-4 ftco-animate">
-              <div className="course">
+              <div className="khoa-hoc-item">
                 <NavLink
                   to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`} 
                   className="img d-flex justify-content-center align-items-center"
@@ -98,9 +97,8 @@ const SectionOurRoom: React.FC = () => {
               </div>
             </div>
           ))}
-          
         </div>
-
+  
         <div className="row justify-content-center mb-5 pb-3">
           <div className="col-md-12 heading-section text-center ftco-animate">
             <h4 className="mb-4">Trending Courses</h4>
@@ -109,7 +107,7 @@ const SectionOurRoom: React.FC = () => {
         <div className="row">
           {trendingCourses.map((KhoaHoc: KhoaHocData) => (
             <div key={KhoaHoc.IDKhoaHoc} className="col-sm col-md-6 col-lg-4 ftco-animate">
-              <div className="course">
+              <div className="khoa-hoc-item">
                 <NavLink
                   to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`} 
                   className="img d-flex justify-content-center align-items-center"
@@ -144,7 +142,7 @@ const SectionOurRoom: React.FC = () => {
         </div>
       </div>
     </section>
-  );
+  );  
 };
 
 export default SectionOurRoom;

@@ -6,170 +6,270 @@ import { RootState } from '../../../redux/store';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { BASE_URL } from '../../../util/fetchfromAPI';
 import Loading from '../Antd/Loading';
+import React, { useState } from 'react';
 
 interface KhoaHocData {
-  IDKhoaHoc: number;
-  IDDanhMuc: number;
-  TenKhoaHoc: string;
-  MoTaKhoaHoc: string;
-  HinhAnh: string;
-  NgayDang: string;
-  LuotXem: number;
-  SoLuongHocVien: number;
-  GiamGia: number;
-  LoaiKhoaHoc: string;
-  GiaTien: string;
+    IDKhoaHoc: number;
+    IDDanhMuc: number;
+    TenKhoaHoc: string;
+    MoTaKhoaHoc: string;
+    HinhAnh: string;
+    NgayDang: string;
+    LuotXem: number;
+    SoLuongHocVien: number;
+    GiamGia: number;
+    LoaiKhoaHoc: string;
+    GiaTien: string;
 }
 
 interface BinhLuanData {
-  IDBinhLuan: number;
-  IDKhoaHoc: number;
-  NoiDung: string;
-  IDNguoiDung: string; 
-  ThoiGian: string; 
+    IDBinhLuan: number;
+    IDKhoaHoc: number;
+    NoiDung: string;
+    IDNguoiDung: string; 
+    ThoiGian: string; 
+}
+
+interface NhanXetData {  
+    IDKhoaHoc: number;
+    IDNguoiDung: string; 
+    NoiDung: string;
+    XepLoai: string; 
+    ThoiGian: string;
 }
 
 const Detail: React.FC = () => {
-  const { id: IDKhoaHoc } = useParams();
-    const { userLogin } = useSelector((state: RootState) => state.userReducer);
+    const { id: IDKhoaHoc } = useParams();
+    const userLogin = useSelector((state: RootState) => state.userReducer.userLogin);
     const token = localStorage.getItem("token");
 
+    const [rating, setRating] = useState<string | null>(null); 
+    const [comment, setComment] = useState<string>(''); 
+    const [feedbackContent, setFeedbackContent] = useState<string>(''); 
+    
     if (!token) {
         return <div>Please log in to view course details.</div>;
     }
 
-  const getCourseDetailAPI = async (IDKhoaHoc: string, token: string) => {
-    try {
-        const response = await axios.get(`${BASE_URL}/khoa-hoc/xem-chi-tiet/${IDKhoaHoc}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        return response.data;
-    } catch (error: any) {
-        console.error('Error:', error);
-        throw new Error(error.response ? error.response.data.message : error.message);
+    if (!userLogin || !userLogin.user) {
+        return <div>Please log in to comment on the course.</div>;
     }
-};
 
-const getCommentsAPI = async (IDKhoaHoc: string, token: string) => {
-    try {
-        const response = await axios.get(`${BASE_URL}/binh-luan/get/${IDKhoaHoc}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        // Trả về dữ liệu bình luận hoặc một mảng trống nếu không có bình luận
-        return response.data || [];
-    } catch (error: any) {
-        console.error('Error fetching comments:', error);
-        throw new Error(error.response ? error.response.data.message : error.message);
-    }
-};
+    const getCourseDetailAPI = async (IDKhoaHoc: string, token: string) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/khoa-hoc/xem-chi-tiet/${IDKhoaHoc}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log('Dữ liệu chi tiết khóa học:', response.data); // Debug log
+            return response.data;
+        } catch (error: any) {
+            console.error('Error:', error);
+            throw new Error(error.response ? error.response.data.message : error.message);
+        }
+    };
 
-    const queryResultKhoaHocByID: UseQueryResult<KhoaHocData> = useQuery({
-      queryKey: ["courseByIDApi", IDKhoaHoc || ""],
-      queryFn: () => getCourseDetailAPI(IDKhoaHoc || "", token),
-      staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: true,
+    const getCommentsAPI = async (IDKhoaHoc: string, token: string) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/binh-luan/get/${IDKhoaHoc}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log('Dữ liệu bình luận :', response.data); // Debug log
+            return response.data || []; // Đảm bảo trả về mảng
+        } catch (error: any) {
+            console.error('Error fetching comments:', error);
+            throw new Error(error.response ? error.response.data.message : error.message);
+        }
+    };
+
+    const queryResultKhoaHocByID: UseQueryResult<KhoaHocData | undefined> = useQuery({
+        queryKey: ["courseByIDApi", IDKhoaHoc || ""],
+        queryFn: () => getCourseDetailAPI(IDKhoaHoc || "", token),
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: true,
     });
 
     const queryResultBinhLuan: UseQueryResult<BinhLuanData[]> = useQuery({
-      queryKey: ["comments", IDKhoaHoc || ""],
-      queryFn: () => getCommentsAPI(IDKhoaHoc || "", token),
-      staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: true,
+        queryKey: ["comments", IDKhoaHoc || ""],
+        queryFn: () => getCommentsAPI(IDKhoaHoc || "", token),
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: true,
     });
 
     if (queryResultKhoaHocByID.isLoading || queryResultBinhLuan.isLoading) {
-      return <Loading />;
+        return <Loading />;
     }
 
     if (queryResultKhoaHocByID.isError) {
-      return <div>Error: {(queryResultKhoaHocByID.error as Error).message}</div>;
+        return <div>Error: {(queryResultKhoaHocByID.error as Error).message}</div>;
     }
 
     if (queryResultBinhLuan.isError) {
-      return <div>Error loading comments: {(queryResultBinhLuan.error as Error).message}</div>;
+        return <div>Error loading comments: {(queryResultBinhLuan.error as Error).message}</div>;
     }
 
     const KhoaHocData = queryResultKhoaHocByID.data;
     const comments = queryResultBinhLuan.data || [];
 
-    // Log course data and comments
-    console.log("Course Data:", KhoaHocData);
-    console.log("Comments:", comments);
-
     if (!KhoaHocData) {
-      return <div>No course details available.</div>;
+        return <div>No course details available.</div>;
     }
 
+
     const handleRegisterCourse = async () => {
-      try {
-          await axios.post(`${BASE_URL}/khoa-hoc-dang-ky/${IDKhoaHoc}`, {}, {
-              headers: { Authorization: `Bearer ${token}` },
-          });
-          message.success('Đăng ký khóa học thành công!');
-      } catch (error: any) {
-          console.error('Error details:', error.response);
-          message.error('Đã xảy ra lỗi trong quá trình đăng ký khóa học.');
-      }
+        try {
+            await axios.post(`${BASE_URL}/khoa-hoc-dang-ky/${IDKhoaHoc}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            message.success('Đăng ký khóa học thành công!');
+        } catch (error: any) {
+            console.error('Error details:', error.response);
+            message.error('Đã xảy ra lỗi trong quá trình đăng ký khóa học.');
+        }
     };
 
-return (
-  <section className="ftco-section">
-      <div className="container">
-          <div className="row">
-              <div className="col-lg-8">
-                  <div className="course-detail">
-                      <h2 className="mb-4">{KhoaHocData.TenKhoaHoc || "Tên khóa học không có"}</h2>
-                      <div className="single-slider mb-4">
-                          <img
-                              src={KhoaHocData.HinhAnh || ""}
-                              alt={KhoaHocData.TenKhoaHoc || "Khóa học không có tên"}
-                              style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-                          />
-                      </div>
-                      <div className="course-info mt-4">
-                          <ul className="list-unstyled">
-                              {[ 
-                                  { label: "ID Khóa Học", value: KhoaHocData.IDKhoaHoc },
-                                  { label: "Mô tả khóa học", value: KhoaHocData.MoTaKhoaHoc || "Chưa có mô tả" },
-                                  { label: "Loại Khóa Học", value: KhoaHocData.LoaiKhoaHoc || "Chưa có loại" },
-                                  { label: "Số lượng học viên", value: KhoaHocData.SoLuongHocVien || "Chưa có thông tin" },
-                                  { label: "Ngày đăng", value: KhoaHocData.NgayDang || "Chưa có thông tin" },
-                                  { label: "Giá tiền", value: `${KhoaHocData.GiaTien || "Chưa có giá"} VND` },
-                                  { label: "Giảm giá", value: `${KhoaHocData.GiamGia !== undefined ? KhoaHocData.GiamGia : "Không có giảm giá"} %` },
-                                  { label: "Lượt xem", value: KhoaHocData.LuotXem || "Chưa có thông tin" },
-                              ].map((courseInfo, index) => (
-                                  <li key={index} className="mb-2">
-                                      <span>{courseInfo.label}:</span> {courseInfo.value !== undefined ? courseInfo.value.toString() : "Chưa có thông tin"}
-                                  </li>
-                              ))} 
-                          </ul>
-                          <button className="btn btn-success mt-3" onClick={handleRegisterCourse}>
-                              Đăng ký khóa học
-                          </button>
-                      </div>
-                  </div>
+    const handleSubmitComment = async () => {
+        if (!comment) {
+            message.error('Vui lòng nhập bình luận.');
+            return;
+        }
+    
+        try {
+            const commentData: BinhLuanData = {
+                IDBinhLuan: 0, 
+                IDKhoaHoc: Number(IDKhoaHoc),
+                NoiDung: comment,
+                IDNguoiDung: userLogin.user.IDNguoiDung.toString(), 
+                ThoiGian: new Date().toISOString(),
+            };
+    
+            console.log('Submitting comment data:', commentData); // Debug log
+    
+            await axios.post(`${BASE_URL}/binh-luan/post/${IDKhoaHoc}`, commentData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+    
+            message.success('Bình luận thành công!');
+            setComment(''); 
+            queryResultBinhLuan.refetch(); 
+        } catch (error: any) {
+            console.error('Error submitting comment:', error.response || error);
+            message.error('Đã xảy ra lỗi trong quá trình gửi bình luận.');
+        }
+    };
+    
+    const handleSubmitFeedback = async () => {
+        if (!rating || !feedbackContent) {
+            message.error('Vui lòng chọn đánh giá và nhập nội dung nhận xét.');
+            return;
+        }
+    
+        try {
+            const feedbackData: NhanXetData = {
+                IDKhoaHoc: Number(IDKhoaHoc),
+                IDNguoiDung: userLogin.user.IDNguoiDung.toString(),
+                NoiDung: feedbackContent,
+                XepLoai: rating,
+                ThoiGian: new Date().toISOString(),
+            };
+    
+            console.log('Submitting feedback data:', feedbackData); // Debug log
 
-                  {/* Phần bình luận */}
-                  <div className="comments-section mt-5">
-                      <h3>Bình luận</h3>
-                      {comments.length > 0 ? (
-                          <ul className="list-unstyled">
-                              {comments.map((comment) => (
-                                  <li key={comment.IDBinhLuan} className="comment-item mb-3 border p-3 rounded">
-                                      <p><strong>{comment.IDNguoiDung}:</strong> {comment.NoiDung}</p>
-                                      <span className="text-muted">{comment.ThoiGian}</span>
-                                  </li>
-                              ))}
-                          </ul>
-                      ) : (
-                          <p>Chưa có bình luận nào cho khóa học này.</p>
-                      )}
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
-);
+            await axios.post(`${BASE_URL}/nhan-xet/${IDKhoaHoc}`, feedbackData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+    
+            message.success('Đánh giá thành công!');
+            setFeedbackContent(''); 
+            setRating(null); 
+        } catch (error: any) {
+            console.error('Error submitting feedback:', error.response || error);
+            message.error('Đã xảy ra lỗi trong quá trình gửi đánh giá.');
+        }
+    };
+    
+
+    return (
+        <section className="ftco-section">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-8">
+                        <div className="course-detail">
+                            <h2 className="mb-4">{KhoaHocData.TenKhoaHoc || "Tên khóa học không có"}</h2>
+                            <div className="single-slider mb-4">
+                                <img
+                                    src={KhoaHocData.HinhAnh || ""}
+                                    alt={KhoaHocData.TenKhoaHoc || "Khóa học không có tên"}
+                                    style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+                                />
+                            </div>
+                            <div className="course-info mt-4">
+                                <ul className="list-unstyled">
+                                    {[ 
+                                        { label: "ID Khóa Học", value: KhoaHocData.IDKhoaHoc },
+                                        { label: "Mô tả khóa học", value: KhoaHocData.MoTaKhoaHoc || "Chưa có mô tả" },
+                                        { label: "Loại Khóa Học", value: KhoaHocData.LoaiKhoaHoc || "Chưa có loại" },
+                                        { label: "Số lượng học viên", value: KhoaHocData.SoLuongHocVien || "Chưa có thông tin" },
+                                    ].map((item, index) => (
+                                        <li key={index} className="d-flex justify-content-between">
+                                            <strong>{item.label}</strong>
+                                            <span>{item.value}</span>
+                                        </li>
+                                    ))}    
+                                </ul>
+                            </div>
+                            <button className="btn btn-primary" onClick={handleRegisterCourse}>
+                                Đăng ký khóa học
+                            </button>
+                        </div>
+
+                        {/* Feedback Section */}
+                        <div className="feedback-section mt-5">
+                            <h4>Gửi nhận xét</h4>
+                            <textarea 
+                                value={feedbackContent}
+                                onChange={(e) => setFeedbackContent(e.target.value)}
+                                placeholder="Nội dung nhận xét"
+                                className="form-control mb-3"
+                            />
+                            <div>
+                                <label>Đánh giá: </label>
+                                <select value={rating || ''} onChange={(e) => setRating(e.target.value)} className="form-select mb-3">
+                                    <option value="">Chọn đánh giá</option>
+                                    <option value="Tích cực">Tích cực</option>
+                                    <option value="Tiêu cực">Tiêu cực</option>
+                                </select>
+                            </div>
+                            <button className="btn btn-success" onClick={handleSubmitFeedback}>
+                                Gửi nhận xét
+                            </button>
+                        </div>
+
+                        {/* Comments Section */}
+                        <div className="comments-section mt-5">
+                            <h4>Bình luận</h4>
+                            <div className="comments-list">
+                                {comments.length > 0 ? comments.map((comment) => (
+                                    <div key={comment.IDBinhLuan} className="comment-item">
+                                        <p><strong>{comment.IDNguoiDung}</strong>: {comment.NoiDung}</p>
+                                        <span>{new Date(comment.ThoiGian).toLocaleString()}</span>
+                                    </div>
+                                )) : <p>Chưa có bình luận nào.</p>}
+                            </div>
+                            <textarea 
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                placeholder="Nội dung bình luận"
+                                className="form-control mb-3"
+                            />
+                            <button className="btn btn-primary" onClick={handleSubmitComment}>
+                                Gửi bình luận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 };
 
 export default Detail;

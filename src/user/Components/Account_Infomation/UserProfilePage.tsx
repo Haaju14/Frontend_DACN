@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import axios from "axios";
 import Loading from "../Antd/Loading";
 import { message } from "antd";
+import { NavLink } from "react-router-dom";
 
 interface KhoaHocData {
   IDKhoaHoc: string;
@@ -21,7 +22,7 @@ interface KhoaHocData {
 
 const UserProfilePage: React.FC = () => {
   const { userLogin } = useSelector((state: RootState) => state.userReducer);
-  const userId = userLogin?.user?.IDNguoiDung; // Lấy ID người dùng
+  const userId = userLogin?.user?.IDNguoiDung;
 
   const fetchRegisteredCoursesAPI = async () => {
     if (!userId) throw new Error("User ID is not available");
@@ -35,14 +36,14 @@ const UserProfilePage: React.FC = () => {
       },
     });
 
-    console.log("API Response:", response.data); // Kiểm tra dữ liệu trả về từ API
-    return response.data.content; // Trả về danh sách khóa học từ trường 'content'
+    console.log("API Response:", response.data);
+    return response.data.content;
   };
 
   const { data: registeredCourses = [], isLoading, isError } = useQuery<KhoaHocData[]>({
     queryKey: ["registeredCourses", userId],
     queryFn: fetchRegisteredCoursesAPI,
-    enabled: !!userId, // Chỉ chạy nếu userId có giá trị
+    enabled: !!userId,
   });
 
   if (!userLogin) {
@@ -69,34 +70,35 @@ const UserProfilePage: React.FC = () => {
         <div className="col-md-8">
           <div className="registered-courses">
             <h2>Khóa Học Đã Đăng Ký</h2>
-            {registeredCourses && registeredCourses.length > 0 ? (
-              registeredCourses.map((course: any) => (
-                <div key={course.IDKhoaHoc} className="product-card">
-                  <img
-                    src={course.IDKhoaHoc_KhoaHoc.HinhAnh || "https://via.placeholder.com/150"}
-                    alt={course.IDKhoaHoc_KhoaHoc.TenKhoaHoc}
-                    className="product-image"
-                  />
-                  <div className="card-content">
-                    <h3 className="product-title">{course.IDKhoaHoc_KhoaHoc.TenKhoaHoc}</h3>
-                    <div className="product-price">
-                      <span className="current-price">{course.IDKhoaHoc_KhoaHoc.GiaTien || 'Chưa có giá'} VND</span>
-                      <span className="original-price">
-                        {(parseFloat(course.IDKhoaHoc_KhoaHoc.GiaTien) + 200000).toFixed(2)} VND
-                      </span>
-                    </div>
-                    <p className="product-description">{course.IDKhoaHoc_KhoaHoc.MoTaKhoaHoc}</p>
-                    <div className="card-body d-flex justify-content-between">
-                      <a href={`/khoa-hoc/xem-chi-tiet/${course.IDKhoaHoc}`} className="btn btn-primary">Xem chi tiết</a>
-                      <a href="#" className="btn btn-success"><i className="fa fa-heart"></i> Thêm yêu thích</a>
+            <div className="course-grid">
+              {registeredCourses && registeredCourses.length > 0 ? (
+                registeredCourses.map((course: any) => (
+                  <div key={course.IDKhoaHoc} className="product-card">
+                    <NavLink to={`/khoa-hoc/xem-chi-tiet/${course.IDKhoaHoc}`}>
+                      <img
+                        src={course.IDKhoaHoc_KhoaHoc.HinhAnh || "https://via.placeholder.com/150"}
+                        alt={course.IDKhoaHoc_KhoaHoc.TenKhoaHoc}
+                        className="product-image"
+                      />
+                    </NavLink>
+                    <div className="card-content">
+                      <NavLink to={`/khoa-hoc/xem-chi-tiet/${course.IDKhoaHoc}`} className="product-title-link">
+                        <h3 className="product-title">{course.IDKhoaHoc_KhoaHoc.TenKhoaHoc}</h3>
+                      </NavLink>
+                      <span className="product-description">{course.IDKhoaHoc_KhoaHoc.MoTaKhoaHoc}</span> 
+                      <div className="product-price">               
+                        <span className="original-price">
+                          {(parseFloat(course.IDKhoaHoc_KhoaHoc.GiaTien) + 200000).toFixed(2)} VND
+                        </span>
+                        <span className="current-price">{course.IDKhoaHoc_KhoaHoc.GiaTien || 'Chưa có giá'} VND</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p>Chưa có khóa học nào được đăng ký.</p>
-            )}
-
+                ))
+              ) : (
+                <p>Chưa có khóa học nào được đăng ký.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

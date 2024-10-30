@@ -1,0 +1,54 @@
+/* CustomCheckbox.css */
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333; /* Màu chữ */
+    transition: color 0.3s ease;
+}
+
+.custom-checkbox:hover {
+    color: #36f4eb; /* Đổi màu chữ khi hover */
+}
+
+.checkmark {
+    height: 24px; /* Kích thước lớn hơn */
+    width: 24px;
+    border: 2px solid #ccc;
+    border-radius: 5px; /* Bo góc */
+    margin-right: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Bóng đổ nhẹ */
+}
+
+.checkmark.checked {
+    background-color: #36f475; /* Màu nền khi đã chọn */
+    border-color: #36f475; /* Đổi màu viền khi đã chọn */
+}
+
+.checkmark.checked::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    top: 6px; /* Điều chỉnh vị trí dấu tick */
+    left: 10px;
+    transform: rotate(45deg);
+    transition: opacity 0.3s ease;
+    opacity: 1; /* Đảm bảo dấu tick hiển thị */
+}
+
+/* Hiệu ứng cho dấu tick */
+.checkmark::after {
+    opacity: 0; /* Ẩn dấu tick khi chưa chọn */
+    transition: opacity 0.3s ease;
+}
+
+.checkmark.checked::after {
+    opacity: 1; /* Hiện dấu tick khi đã chọn */
+}

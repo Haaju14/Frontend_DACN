@@ -1,112 +1,117 @@
 import React, { useState, useEffect } from "react";
-import { BASE_URL } from "../../../util/fetchfromAPI"; // Chỉ cần import BASE_URL
+import { BASE_URL } from "../../../util/fetchfromAPI"; 
 import axios from "axios";
+import { NavLink } from "react-router-dom";
+import { message } from "antd";
+import Loading from "../Antd/Loading";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 interface KhoaHocData {
   IDKhoaHoc: number;
   TenKhoaHoc: string;
   MoTaKhoaHoc: string;
   HinhAnh: string;
+  NgayDang: string;
+  LuotXem: number;
+  GiamGia: number;
   GiaTien: string;
 }
 
-interface FavoritesProps {
-  IDNguoiDung: number; // ID người dùng
-}
-
-const Favorites: React.FC<FavoritesProps> = ({ IDNguoiDung }) => {
+const Favorites: React.FC = () => {
   const [favoriteCourses, setFavoriteCourses] = useState<KhoaHocData[]>([]);
-  const [notification, setNotification] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const { userLogin } = useSelector((state: RootState) => state.userReducer);
+  const userId = userLogin?.user?.IDNguoiDung;
 
-  // Hàm để lấy danh sách khóa học yêu thích
+  // Hàm lấy danh sách khóa học yêu thích
   const getFavoritesCourseAPI = async (token: string) => {
     try {
-      // Gọi API để lấy khóa học đã yêu thích
-      
       const response = await axios.get(`${BASE_URL}/favorites`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('Khóa học đã yêu thích trả về:', response.data); // Log dữ liệu trả về
-      return response.data; // Trả về danh sách khóa học đã yêu thích
+      console.log("Danh sách khóa học yêu thích:", response.data); // Log the data received from the API
+      return response.data;
     } catch (error: any) {
-      console.error('Lỗi khi gọi API lấy khóa học đã yêu thích:', error.response || error.message);
-      throw new Error(error.response ? error.response.data.message : error.message);
+      console.error("Lỗi khi lấy khóa học yêu thích:", error);
+      message.error("Không thể tải danh sách yêu thích.");
     }
   };
 
   // Hàm để xóa khóa học khỏi danh sách yêu thích
   const deleteFavoritesCourseAPI = async (IDKhoaHoc: number) => {
+    const token = localStorage.getItem('token');
+    if (!token) return message.error("Không tìm thấy token.");
+
     try {
-      const token = localStorage.getItem('token');
-
       await axios.delete(`${BASE_URL}/favorites`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
-          IDNguoiDung,
-          IDKhoaHoc,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        data: { IDNguoiDung: userId, IDKhoaHoc },
       });
-
-      // Cập nhật lại danh sách khóa học yêu thích
       setFavoriteCourses(favoriteCourses.filter(course => course.IDKhoaHoc !== IDKhoaHoc));
-      setNotification("Đã xóa khóa học khỏi danh sách yêu thích!");
+      message.success("Đã xóa khóa học khỏi danh sách yêu thích!");
     } catch (error) {
-      console.error("Error removing favorite course:", error);
-      setNotification("Lỗi khi xóa khóa học khỏi danh sách yêu thích!");
+      console.error("Lỗi khi xóa khóa học yêu thích:", error);
+      message.error("Không thể xóa khóa học.");
     }
   };
 
-  // Lấy danh sách khóa học yêu thích khi component được mount
   useEffect(() => {
     const fetchFavoriteCourses = async () => {
+      setLoading(true);
       const token = localStorage.getItem('token');
       if (token) {
-        try {
-          const courses = await getFavoritesCourseAPI(token);
-          setFavoriteCourses(courses);
-        } catch (error) {
-          setNotification("Lỗi khi tải danh sách khóa học yêu thích!");
-        }
+        const courses = await getFavoritesCourseAPI(token);
+        setFavoriteCourses(courses);
       }
+      setLoading(false);
     };
-  
     fetchFavoriteCourses();
-  }, [IDNguoiDung]);
+  }, [userId]); 
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <div>
-      <h1>Khóa học yêu thích</h1>
-      {notification && <div className="alert alert-info">{notification}</div>}
+    <div className="user-profile-page container">
       <div className="row">
-        {favoriteCourses.length > 0 ? (
-          favoriteCourses.map(course => (
-            <div className="col-md-4" key={course.IDKhoaHoc}>
-              <div className="course-item">
-                <img
-                  src={course.HinhAnh}
-                  alt={course.TenKhoaHoc}
-                  style={{ width: "100%", height: "auto", maxHeight: "200px" }}
-                />
-                <h3>{course.TenKhoaHoc}</h3>
-                <p>{course.MoTaKhoaHoc}</p>
-                <p>
-                  <strong>Price:</strong> {course.GiaTien}
-                </p>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => deleteFavoritesCourseAPI(course.IDKhoaHoc)}
-                >
-                  Remove from Favorites
-                </button>
-              </div>
+        <div className="col-md-8">
+          <div className="favorite-courses">
+            <h2>Khóa Học Yêu Thích</h2>
+            <div className="course-grid">
+              {favoriteCourses && favoriteCourses.length > 0 ? (
+                favoriteCourses.map((course: any) => (
+                  <div key={course.IDKhoaHoc} className="product-card">
+                    <NavLink to={`/khoa-hoc/xem-chi-tiet/${course.IDKhoaHoc}`}>
+                      <img
+                        src={course.HinhAnh || "https://via.placeholder.com/150"}
+                        alt={course.TenKhoaHoc}
+                        className="product-image"
+                      />
+                    </NavLink>
+                    <div className="card-content">
+                      <NavLink to={`/khoa-hoc/xem-chi-tiet/${course.IDKhoaHoc}`} className="product-title-link">
+                        <h3 className="product-title">{course.TenKhoaHoc}</h3>
+                      </NavLink>
+                      <span className="product-description">{course.MoTaKhoaHoc}</span> 
+                      <div className="product-price">               
+                        <span className="original-price">
+                          {(parseFloat(course.GiaTien) + 200000).toFixed(2)} VND
+                        </span>
+                        <span className="current-price">{course.GiaTien || 'Chưa có giá'} VND</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>Chưa có khóa học yêu thích nào.</p>
+              )}
             </div>
-          ))
-        ) : (
-          <p>Không có khóa học yêu thích nào.</p>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );
