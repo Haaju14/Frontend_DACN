@@ -216,20 +216,7 @@ const Register: React.FC = () => {
                     <div className="text-danger">{formik.errors.GioiTinh}</div>
                 ) : null}
             </div>
-            <div className="form-group">
-                <label htmlFor="registerRole">Role</label>
-                <input
-                  type="text"
-                  className="form-control rounded-input"
-                  id="registerRole"
-                  name="Role"
-                  value={formik.values.Role}
-                  readOnly // Make the input read-only
-                />
-                {formik.touched.Role && formik.errors.Role ? (
-                  <div className="text-danger">{formik.errors.Role}</div>
-                ) : null}
-              </div>
+            
             <div className="form-group">
                 <label htmlFor="registerAvatar">Avatar</label>
                 <input

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
-import { BASE_URL } from "../../../util/fetchfromAPI"; // Chỉ cần import BASE_URL
+import { BASE_URL } from "../../../util/fetchfromAPI";
 import axios from "axios";
 
 interface ProfileProps {
@@ -11,50 +11,96 @@ interface ProfileProps {
     HoTen: string;
     SDT: string;
     GioiTinh: boolean;
-    AnhDaiDien?: string; 
+    AnhDaiDien?: string;
   };
 }
 
 const Profile: React.FC<ProfileProps> = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false); // Modal cho đổi mật khẩu
   const [notification, setNotification] = useState("");
-  const [userData, setUserData] = useState(user); // Lưu thông tin người dùng trong state
+  const [passwordNotification, setPasswordNotification] = useState("");
+  const [userData, setUserData] = useState(user);
   const [, setSelectedFile] = useState<File | null>(null);
-
-
 
   const formik = useFormik({
     initialValues: {
-      TenDangNhap: userData.TenDangNhap || '',
-      Email: userData.Email || '',
-      HoTen: userData.HoTen || '',
-      SDT: userData.SDT || '',
-      AnhDaiDien: userData.AnhDaiDien || '', 
-    },  
-    enableReinitialize: true, // Cho phép cập nhật giá trị khởi tạo khi userData thay đổi
+      TenDangNhap: userData.TenDangNhap || "",
+      Email: userData.Email || "",
+      HoTen: userData.HoTen || "",
+      SDT: userData.SDT || "",
+      AnhDaiDien: userData.AnhDaiDien || "",
+    },
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        const token = localStorage.getItem('token');
-
-        const response = await axios.put(`${BASE_URL}/user/profile`, {            
-          TenDangNhap: values.TenDangNhap,
-          Email: values.Email,
-          HoTen: values.HoTen,
-          SDT: values.SDT,
-          AnhDaiDien: values.AnhDaiDien,
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const token = localStorage.getItem("token");
+        const response = await axios.put(
+          `${BASE_URL}/user/profile`,
+          {
+            TenDangNhap: values.TenDangNhap,
+            Email: values.Email,
+            HoTen: values.HoTen,
+            SDT: values.SDT,
+            AnhDaiDien: values.AnhDaiDien,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUserData({
+          ...userData,
+          TenDangNhap: response.data.TenDangNhap,
+          Email: response.data.Email,
+          HoTen: response.data.HoTen,
+          SDT: response.data.SDT,
+          AnhDaiDien: response.data.AnhDaiDien,
         });
 
-        // Cập nhật userData với thông tin mới từ API
-        setUserData(response.data);
-        setNotification("Cập nhật thông tin cá nhân thành công,vui lòng đăng nhập lại để cập nhật thông tin!");
-        setShowModal(false); // Đóng modal sau khi cập nhật thành công
+        setNotification("Cập nhật thông tin cá nhân thành công, vui lòng đăng nhập lại để cập nhật thông tin!");
+        setShowModal(false);
       } catch (error) {
         console.error("Error updating user profile:", error);
         setNotification("Lỗi khi cập nhật thông tin cá nhân!");
+      }
+    },
+  });
+
+  const passwordFormik = useFormik({
+    initialValues: {
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+    onSubmit: async (values) => {
+      if (values.newPassword !== values.confirmPassword) {
+        setPasswordNotification("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem("token");
+        await axios.post(
+          `${BASE_URL}/change-password`,
+          {
+            oldPassword: values.oldPassword,
+            newPassword: values.newPassword,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setPasswordNotification("Đổi mật khẩu thành công!");
+        setTimeout(() => setPasswordNotification(""), 3000); 
+        setShowPasswordModal(false); 
+      } catch (error) {
+        setPasswordNotification("Lỗi khi đổi mật khẩu!");
+        console.error("Error changing password:", error);
       }
     },
   });
@@ -66,11 +112,14 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     }
   };
 
-
-
-
   return (
     <div>
+      
+      {passwordNotification && (
+        <div className="alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3">
+          {passwordNotification}
+        </div>
+      )}
       <div className="profile card p-3">
         <div className="profile-header d-flex align-items-center">
           <div>
@@ -79,7 +128,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
               style={{ width: "100px", height: "100px" }}
             >
               <img
-                src={userData.AnhDaiDien || '/default-avatar.png'} // Default avatar if none exists
+                src={userData.AnhDaiDien || "/default-avatar.png"}
                 alt="Profile Picture"
                 className="rounded-circle"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -101,49 +150,35 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             />
           </div>
           <div className="profile-verification ml-auto d-flex flex-column align-items-start">
-            <span className="badge badge-success mb-2">
-              Thành tựu
-            </span>
+            <span className="badge badge-success mb-2">Thành tựu</span>
             <span className="badge badge-primary">Học viên chăm chỉ</span>
             <span className="badge badge-primary">Học viên nhiều đóng góp</span>
             <span className="badge badge-primary">Học viên chăm chỉ</span>
           </div>
         </div>
         <div className="profile-info mt-3">
-          <h2>Hello, I'm  {userData.TenDangNhap}</h2>
+          <h2>Hello, I'm {userData.TenDangNhap}</h2>
           <p>Join in 2024</p>
           <button className="btn btn-outline-primary" onClick={() => setShowModal(true)}>
             Edit profile
           </button>
+          <button className="btn btn-outline-secondary ml-2" onClick={() => setShowPasswordModal(true)}>
+            Đổi mật khẩu
+          </button>
         </div>
       </div>
 
-      {/* Notification */}
       {notification && <div className="alert alert-info">{notification}</div>}
 
-      {/* Bootstrap Modal for Editing Profile */}
       {showModal && (
         <>
-          <div
-            className="modal-backdrop"
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-          ></div>
-          <div
-            className="modal fade show d-block"
-            tabIndex={-1}
-            role="dialog"
-            style={{ display: showModal ? "block" : "none" }}
-          >
+          <div className="modal-backdrop" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}></div>
+          <div className="modal fade show d-block" tabIndex={-1} role="dialog">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Edit Profile</h5>
-                  <button
-                    type="button"
-                    className="close"
-                    onClick={() => setShowModal(false)}
-                    aria-label="Close"
-                  >
+                  <button type="button" className="close" onClick={() => setShowModal(false)} aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -153,9 +188,8 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                       <label htmlFor="TenDangNhap">Tên đăng nhập</label>
                       <input
                         type="text"
-                        className="form-control rounded-input"
+                        className="form-control"
                         id="TenDangNhap"
-                        placeholder="Enter username"
                         name="TenDangNhap"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -166,9 +200,8 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                       <label htmlFor="Email">Email</label>
                       <input
                         type="email"
-                        className="form-control rounded-input"
+                        className="form-control"
                         id="Email"
-                        placeholder="Enter email"
                         name="Email"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -179,9 +212,8 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                       <label htmlFor="HoTen">Họ tên</label>
                       <input
                         type="text"
-                        className="form-control rounded-input"
+                        className="form-control"
                         id="HoTen"
-                        placeholder="Enter full name"
                         name="HoTen"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -189,28 +221,20 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="SDT">Số điện thoại </label>
+                      <label htmlFor="SDT">Số điện thoại</label>
                       <input
                         type="text"
-                        className="form-control rounded-input"
+                        className="form-control"
                         id="SDT"
-                        placeholder="Enter phone"
                         name="SDT"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.SDT}
                       />
                     </div>
-                    
                     <div className="modal-footer">
-                      <button type="submit" className="btn btn-primary">
-                        Update
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={() => setShowModal(false)}
-                      >
+                      <button type="submit" className="btn btn-primary">Update</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
                         Cancel
                       </button>
                     </div>
@@ -220,6 +244,63 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             </div>
           </div>
         </>
+      )}
+
+      {showPasswordModal && (
+        
+        <div className="modal fade show d-block" style={{ display: "block" }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Đổi mật khẩu</h5>
+                <button type="button" className="close" onClick={() => setShowPasswordModal(false)} aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={passwordFormik.handleSubmit}>
+                  <div className="form-group">
+                    <label>Mật khẩu cũ</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="oldPassword"
+                      onChange={passwordFormik.handleChange}
+                      value={passwordFormik.values.oldPassword}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Mật khẩu mới</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="newPassword"
+                      onChange={passwordFormik.handleChange}
+                      value={passwordFormik.values.newPassword}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Xác nhận mật khẩu mới</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="confirmPassword"
+                      onChange={passwordFormik.handleChange}
+                      value={passwordFormik.values.confirmPassword}
+                    />
+                  </div>
+                  {passwordNotification && <div className="alert alert-info">{passwordNotification}</div>}
+                  <div className="modal-footer">
+                    <button type="submit" className="btn btn-primary">Đổi mật khẩu</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => setShowPasswordModal(false)}>
+                      Hủy
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

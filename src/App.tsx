@@ -18,7 +18,10 @@ import AdminTemplate from "./admin/templates/AdminTemplate";
 // import TableUser from "./admin/pagesAdmin/table/TableUser.tsx";
 import NotFoundPage from "./pageGlobal/NotFoundPage.tsx";
 import KhoaHocPage from "./user/Pages/KhoaHocPage.tsx";
-import FavoritesPage from "./user/Pages/FavoritesPage.tsx";
+import CoursesListPage from "./user/Pages/CoursesListPage.tsx";
+import SearchUserPage from "./user/Pages/SearchUserPage.tsx";
+import TeacherDetailPage from "./user/Pages/TeacherDetailPage.tsx";
+import ManageCourses from "./admin/ManageCourses/ManageCourses.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -48,23 +51,24 @@ function App() {
             <Route 
               path="/user/profile" element={<ManagePage />}>
             </Route>
-            <Route
-              path="/favorites" element={<FavoritesPage/>} >
-            </Route>
-            <Route
-              path="/giangvien" element={<ManagePage/>} >
-            </Route>
             
+            <Route
+              path="/Courses-List" element={<CoursesListPage/>} >
+            </Route>
+            <Route
+            path="/SearchUser" element={<SearchUserPage/>}>
+            </Route>
           </Route>
-          
-          {/* Admin Routes
-          <Route path="admin" element={<AdminTemplate />}>
-            <Route path="table-room" element={<TableRoom />} />
-            <Route path="table-location" element={<TableLocation />} />
-            <Route path="table-comment" element={<TableComment />} />
-            <Route path="table-booking-room" element={<TableBookingRoom />} />
-            <Route path="table-user" element={<TableUser />}></Route>
-          </Route> */}
+          <Route
+            path ="/giangvien/:IDNguoiDung" element={<TeacherDetailPage/>} >
+          </Route>
+
+          {/* Admin Routes */}
+            <Route path="/admin" element={<AdminTemplate />}>
+              
+              <Route path="Manage-Course" element={<ManageCourses />} />
+            </Route>
+
           404 Route  
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

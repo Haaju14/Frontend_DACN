@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup"; // For validation
-import { BASE_URL } from "../../util/fetchfromAPI";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/reducers/userReducer"; // Import action login
-import useRoute from "../../hook/useRoute";
+import useRoute from "../../hook/useRoute"; // Custom hook to manage routing
+import { BASE_URL } from "../../util/fetchfromAPI";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  
+
   // Formik for form handling and validation
   const formik = useFormik({
     initialValues: {
@@ -25,8 +25,8 @@ const Login: React.FC = () => {
       MatKhau: "", // Correct case for consistency
     },
     validationSchema: Yup.object({
-      Email: Yup.string().email("Invalid email address").required("Required"), // Consistent key
-      MatKhau: Yup.string().required("Password is required"), // Consistent key
+      Email: Yup.string().email("Invalid email address").required("Required"),
+      MatKhau: Yup.string().required("Password is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -34,19 +34,29 @@ const Login: React.FC = () => {
           Email: values.Email,
           MatKhau: values.MatKhau,
         });
-    
+
         if (response.status === 200) {
           const token = response.data.content.token; // Lấy token từ content
           const user = response.data.content.user; // Lấy thông tin người dùng từ response
-          
+
           // Dispatch action login với user và token
-          dispatch(login({ user, token })); 
-          
+          dispatch(login({ user, token }));
+
           // Lưu token vào localStorage
           localStorage.setItem("token", token);
-          
-          setMessage("Login successful!");
-          navigate("#"); 
+
+          // Kiểm tra vai trò của người dùng và điều hướng tương ứng
+          if (user.Role === "admin" || user.Role === "giangvien") {
+            // Chuyển hướng đến trang quản lý nếu là admin hoặc giảng viên
+            navigate("/");
+          } else {
+            // Giữ nguyên trang cho học viên
+            setMessage("Login successful!");
+            navigate("/");
+          }
+
+          // Reload lại trang sau khi đăng nhập thành công
+          window.location.reload();
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -72,60 +82,67 @@ const Login: React.FC = () => {
   }, [formik.values.MatKhau]);
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="form-group">
-        <div>
+    <div className="login-container">
+      <h2>Login</h2>
+      <form onSubmit={formik.handleSubmit}>
+
+        {/* Email Input */}
+        <div className="form-group">
           <label htmlFor="loginEmail">Email</label>
           <input
             type="email"
-            className="form-control rounded-input"
+            className="form-control"
             id="loginEmail"
             placeholder="Enter email"
             name="Email" // Updated to match formik values
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.Email} // Updated to match formik values
+            value={formik.values.Email}
           />
-          {formik.touched.Email && formik.errors.Email ? (
+          {formik.touched.Email && formik.errors.Email && (
             <div className="text-danger">{formik.errors.Email}</div>
-          ) : null}
+          )}
         </div>
-      </div>
-      <div className="form-group">
-        <div>
+
+        {/* Password Input */}
+        <div className="form-group">
           <label htmlFor="loginPassword">Password</label>
           <div className="input-group">
             <input
               type={showPassword ? "text" : "password"}
-              className="form-control rounded-input"
+              className="form-control"
               id="loginPassword"
               placeholder="Password"
               name="MatKhau" // Updated to match formik values
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.MatKhau} // Updated to match formik values
+              value={formik.values.MatKhau}
             />
             <div className="input-group-append">
               <button
                 type="button"
                 className="btn btn-outline-secondary"
                 onClick={togglePasswordVisibility}
-                style={{ marginTop: "0px" }}
               >
                 <i className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`}></i>
               </button>
             </div>
           </div>
-          {formik.touched.MatKhau && formik.errors.MatKhau ? (
+          {formik.touched.MatKhau && formik.errors.MatKhau && (
             <div className="text-danger">{formik.errors.MatKhau}</div>
-          ) : null}
+          )}
         </div>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Login
-      </button>
-      {message && <div className="mt-3">{message}</div>}
-    </form>
+
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-primary">
+          Login
+        </button>
+
+        {/* Error or Success Message */}
+        {message && <div className="mt-3">{message}</div>}
+
+      </form>
+    </div>
   );
 };
 

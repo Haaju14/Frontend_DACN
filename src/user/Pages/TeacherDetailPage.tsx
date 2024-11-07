@@ -1,14 +1,10 @@
 import ManageNav from "../Components/Account_Infomation/ManageNav";
-import UserProfilePage from "../Components/Account_Infomation/UserProfilePage";
-import Favorites from "../Components/Favorites/Favorites";
-
+import TeacherDetailComponent from "../Components/TeacherDetail/TeacherDetail";
 const FavoritesPage: React.FC = () => {
     return (
       <>
         <ManageNav />
-        <Favorites />
-        
-
+        <TeacherDetailComponent/>
       </>
     );
   };

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootState } from "../../redux/store";
 import useRoute from "../../hook/useRoute";
 import { logout } from "../../redux/reducers/userReducer";
+import { NavLink } from "react-router-dom";
 
 const HeaderHomeAdmin: React.FC = () => {
   const { navigate } = useRoute();
@@ -32,37 +33,36 @@ const HeaderHomeAdmin: React.FC = () => {
           <nav className="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"></nav>
           <ul className="navbar-nav topbar-nav ms-md-auto align-items-center">
             <li className="nav-item topbar-user dropdown hidden-caret">
-              <a
+              <NavLink
                 className="dropdown-toggle profile-pic"
                 data-bs-toggle="dropdown"
-                href="#"
+                to="#"
                 aria-expanded="false"
               >
                 <span className="profile-username">
                   <span className="op-7">Hi,</span>
-                  <span className="fw-bold">{userLogin?.user.name}</span>
+                  <span className="fw-bold">{userLogin?.user.TenDangNhap}</span>
                 </span>
-              </a>
+              </NavLink>
               <ul className="dropdown-menu dropdown-user animated fadeIn">
                 <div className="dropdown-user-scroll scrollbar-outer">
                   <li>
                     <div className="user-box">
                       <div className="u-text">
-                        <h4>{userLogin?.user.name}</h4>
-                        <p className="text-muted">{userLogin?.user.email}</p>
+                        <h4>{userLogin?.user.TenDangNhap}</h4>
+                        <p className="text-muted">{userLogin?.user.Email}</p>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div className="dropdown-divider" />
-                    <a
+                    <NavLink                     
                       className="dropdown-item"
-                      onClick={() => {
-                        navigate("/info-user");
-                      }}
+                      to="/user/profile"
+                      target="_blank"
                     >
                       My Profile
-                    </a>
+                    </NavLink>
                     <div className="dropdown-divider" />
                     <a className="dropdown-item" onClick={handleLogOut}>
                       Logout

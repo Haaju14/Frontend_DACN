@@ -4,14 +4,27 @@ import Register from "./Register";
 import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword
 import UserMenu from "./UserMenu";
 import { NavLink } from "react-router-dom";
-
 const Header: React.FC = () => {
+
   const [activeTab, setActiveTab] = useState("login"); // State để quản lý tab hiện tại
 
   const handleForgotPasswordClick = () => {
     setActiveTab("forgot-password"); // Chuyển sang tab quên mật khẩu
   };
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const handleSearchToggle = () => {
+    setSearchOpen(!searchOpen); // Toggle mở hộp tìm kiếm
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim() !== "") {
+      // Xử lý tìm kiếm, ví dụ gửi API hoặc điều hướng
+      console.log(`Tìm kiếm giảng viên với tên: ${searchTerm}`);
+      setSearchTerm(""); // Reset trường tìm kiếm
+    }
+  };
   return (
     <>
       <nav
@@ -56,9 +69,9 @@ const Header: React.FC = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Contact
-                </a>
+                <NavLink to="/SearchUser" className="nav-link">
+                  Teacher
+                </NavLink>
               </li>
               <li className="nav-item d-flex align-items-center">
                 <UserMenu />

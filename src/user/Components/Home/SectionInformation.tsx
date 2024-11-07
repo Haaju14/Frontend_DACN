@@ -7,9 +7,9 @@ const SectionInformation: React.FC = () => {
       <div className="container">
         <div className="row">
           <div
-            className="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center"
+            className="col-md-5 p-md-5 img-4 img-2 d-flex justify-content-center align-items-center"
             style={{ backgroundImage: "url(user/images/MeoDaDen.jpg)" }}
-          >
+            >
             <NavLink
               to="https://vimeo.com/1018941577"
               className="icon popup-vimeo d-flex justify-content-center align-items-center"

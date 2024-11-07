@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import CustomCheckbox from './CustomCheckbox'; // Import component CustomCheckbox
 
 interface KhoaHocData {
     IDKhoaHoc: number;
@@ -32,7 +31,7 @@ const KhoaHocComponent: React.FC = () => {
     const [favoriteCourses, setFavoriteCourses] = useState<number[]>([]);
     const [showFavoriteOnly, setShowFavoriteOnly] = useState<boolean>(false);
     const navigate = useNavigate();
-
+    
     const fetchKhoaHocAPI = async () => {
         const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
         return data.content;
@@ -192,13 +191,7 @@ const KhoaHocComponent: React.FC = () => {
                                     </div>
                                     <span>Tầm giá</span>
                                     <RangeSliderComponent onChange={handlePriceRangeChange} />
-                                    <div className="form-group">
-                                        <CustomCheckbox 
-                                            checked={showFavoriteOnly} 
-                                            onChange={handleShowFavoriteOnlyChange} 
-                                            label="Khóa học đã yêu thích" 
-                                        />
-                                    </div>
+
                                 </div>
                             </form>
                         </div>

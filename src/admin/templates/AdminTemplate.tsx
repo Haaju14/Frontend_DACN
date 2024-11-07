@@ -13,13 +13,14 @@ const AdminTemplate: React.FC = () => {
 
   const { userLogin } = useSelector((state: RootState) => state.userReducer);
 
-  if (userLogin?.user.Role !== "admin") {
+  if (userLogin?.user.Role !== "admin" && userLogin?.user.Role !== "giangvien") {
     console.log(
-      'userLogin?.user.role !== "admin": ',
-      userLogin?.user.Role !== "admin"
+      'userLogin?.user.Role !== "admin" && userLogin?.user.Role !== "giangvien": ',
+      userLogin?.user.Role
     );
     navigate("/");
   }
+  
 
   return (
     <div className="wrapper">

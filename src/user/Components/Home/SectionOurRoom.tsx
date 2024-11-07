@@ -15,13 +15,17 @@ interface KhoaHocData {
   GiaTien: string;
   XepLoai: string;
 }
+interface NhanXetData {
+  XepLoai: string;
+
+}
 
 const SectionOurRoom: React.FC = () => {
   useRoute();
 
   const fetchKhoaHocAPI = async () => {
     const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
-    return data.content || []; // Xử lý khi không có dữ liệu
+    return data.content || [];
   };
 
   const queryResult: UseQueryResult<KhoaHocData[]> = useQuery<KhoaHocData[]>({
@@ -31,7 +35,6 @@ const SectionOurRoom: React.FC = () => {
     refetchOnWindowFocus: true,
   });
 
-  // Handle loading and error states
   if (queryResult.isLoading) {
     return <Loading />;
   }
@@ -42,7 +45,7 @@ const SectionOurRoom: React.FC = () => {
   }
 
   // Kiểm tra xem queryResult.data có giá trị hay không
-  const data = queryResult.data || []; // Sử dụng mảng rỗng nếu data không tồn tại
+  const data = queryResult.data || []; 
 
   // Lấy danh sách khóa học top (1-5) và trending (6-10)
   const topCourses = data.slice(0, 5); // Khóa học 1-5
@@ -65,7 +68,7 @@ const SectionOurRoom: React.FC = () => {
         <div className="row">
           {topCourses.map((KhoaHoc: KhoaHocData) => (
             <div key={KhoaHoc.IDKhoaHoc} className="col-sm col-md-6 col-lg-4 ftco-animate">
-              <div className="khoa-hoc-item">
+              <div className="course-item">
                 <NavLink
                   to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`} 
                   className="img d-flex justify-content-center align-items-center"
@@ -82,11 +85,11 @@ const SectionOurRoom: React.FC = () => {
                     </NavLink>
                   </h3>
                   <p>
-                    <span className="price mr-2">{KhoaHoc.GiaTien} VND</span>
-                  </p>
-                  <p>
                     <span className="description">{KhoaHoc.MoTaKhoaHoc}</span>
                   </p>
+                  <p>
+                    <span className="price mr-2">{KhoaHoc.GiaTien} VND</span>
+                  </p>           
                   <hr />
                   <button>
                     <NavLink to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`}>
@@ -107,7 +110,7 @@ const SectionOurRoom: React.FC = () => {
         <div className="row">
           {trendingCourses.map((KhoaHoc: KhoaHocData) => (
             <div key={KhoaHoc.IDKhoaHoc} className="col-sm col-md-6 col-lg-4 ftco-animate">
-              <div className="khoa-hoc-item">
+              <div className="course-item">
                 <NavLink
                   to={`/khoa-hoc/xem-chi-tiet/${KhoaHoc.IDKhoaHoc}`} 
                   className="img d-flex justify-content-center align-items-center"
@@ -124,10 +127,10 @@ const SectionOurRoom: React.FC = () => {
                     </NavLink>
                   </h3>
                   <p>
-                    <span className="price mr-2">{KhoaHoc.GiaTien} VND</span>
+                    <span className="description">{KhoaHoc.MoTaKhoaHoc}</span>
                   </p>
                   <p>
-                    <span className="description">{KhoaHoc.MoTaKhoaHoc}</span>
+                    <span className="price mr-2">{KhoaHoc.GiaTien} VND</span>
                   </p>
                   <hr />
                   <button>

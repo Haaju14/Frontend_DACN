@@ -11830,10 +11830,10 @@ textarea.form-control {
 .truncated-title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 1; /* Limit to 1 line */
-  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
+  -webkit-line-clamp: 2; 
+  white-space: normal;
 }
 
 .registered-course {
@@ -12281,4 +12281,81 @@ textarea.form-control {
     max-width: none; /* Bỏ giới hạn chiều rộng tối đa */
   }
 }
+
+/* Popular Course */
+.heading-section h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  text-transform: uppercase;  
+  letter-spacing: 1.2px;
+  margin: 0;
+  display: inline-block;
+  padding-bottom: 10px;
+  position: relative;
+}
+.course-item {
+  flex: 0 1 calc(33.333% - 16px); 
+  margin: 8px; /* Giảm khoảng cách giữa các mục */
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  padding: 16px; 
+  background-color: #fff; 
+  display: flex; 
+  flex-direction: column; 
+  height: 100%; 
+  transition: transform 0.3s, box-shadow 0.3s; 
+  position: relative; 
+  min-width: 250px; /* Đặt chiều rộng tối thiểu để đảm bảo đẹp */
+  max-width: 400px; /* Đặt chiều rộng tối đa */
+  margin-top: 0;
+}
+
+.course-item:hover {
+  transform: translateY(-20px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.img {
+  height: 220px; /* Đặt chiều cao hình ảnh */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  color: #fff;
+  font-size: 24px;
+  background-color: rgba(0, 0, 0, 0.6); /* Nền mờ cho biểu tượng */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.img:hover .icon {
+  background-color: rgba(0, 0, 0, 0.8); /* Đổi màu nền khi hover */
+  transform: scale(1.1); /* Phóng to nhẹ biểu tượng */
+}
+
+/* Responsive chỉnh chiều cao ảnh cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .img {
+    height: 180px; /* Giảm chiều cao cho màn hình nhỏ */
+  }
+}
+/* Infomation */
+.img-4 {
+  height: 300%;
+  border-radius: 30px;
+  background-size: cover;
+  background-position: center;
+}
+/*------------------------------------------Manage Course ------------------------------ */
 

@@ -1,5 +1,6 @@
 import React from "react";
 import useRoute from "../../hook/useRoute";
+import { NavLink } from "react-router-dom";
 
 const SideBarAdmin: React.FC = () => {
   const { navigate } = useRoute();
@@ -9,9 +10,9 @@ const SideBarAdmin: React.FC = () => {
       <div className="sidebar-logo">
         {/* Logo Header */}
         <div className="logo-header" data-background-color="dark">
-          <a href="index.html" className="logo">
+          <NavLink to="/admin" className="logo">
             Manage
-          </a>
+          </NavLink>
           <div className="nav-toggle">
             <button className="btn btn-toggle toggle-sidebar">
               <i className="gg-menu-right" />
@@ -40,50 +41,20 @@ const SideBarAdmin: React.FC = () => {
                 <p>Manage User</p>
               </a>
             </li>
+            
             <li className="nav-item">
               <a
                 data-bs-toggle="collapse"
                 onClick={() => {
-                  navigate("/admin/table-location");
-                }}
-              >
-                <i className="fas fa-th-list" />
-                <p>Manage Locate</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                data-bs-toggle="collapse"
-                onClick={() => {
-                  navigate("/admin/table-room");
+                  navigate("/admin/Manage-Course");
                 }}
               >
                 <i className="fas fa-pen-square" />
-                <p>Manage Room</p>
+                <p>Manage Course</p>
               </a>
             </li>
-            <li className="nav-item">
-              <a
-                data-bs-toggle="collapse"
-                onClick={() => {
-                  navigate("/admin/table-booking-room");
-                }}
-              >
-                <i className="fas fa-table" />
-                <p>Manage Booking</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                data-bs-toggle="collapse"
-                onClick={() => {
-                  navigate("/admin/table-comment");
-                }}
-              >
-                <i className="fas fa-table" />
-                <p>Manage Comment</p>
-              </a>
-            </li>
+            
+            
           </ul>
         </div>
       </div>

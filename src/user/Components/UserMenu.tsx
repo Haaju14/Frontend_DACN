@@ -25,16 +25,15 @@ const UserMenu: React.FC = () => {
     navigate("/user/profile"); // Navigate to user info page
   };
 
-  const handleManageAdmin = () => {
-    navigate("/user/profile"); // Navigate to admin management page
-  };
+  
   const handleFavorites = () =>{
     navigate("/favorites");
   };
+ 
 
   const handleTabSwitch = (tab: "login" | "register") => {
     const targetTab = document.querySelector(`#${tab}-tab`) as HTMLAnchorElement;
-    targetTab?.click(); // Simulate tab switching
+    targetTab?.click(); 
   };
 
   const renderPopup = () => {
@@ -44,17 +43,37 @@ const UserMenu: React.FC = () => {
           <NavLink className="dropdown-item" onClick={handleManage} to={"/user/profile"}>
             Account Information
           </NavLink>
+
           {userLogin.user.Role === "admin" && (
-            <NavLink className="dropdown-item" onClick={handleManageAdmin} to={"/user/profile"}>
-              Manage Admin
-            </NavLink>
+            <NavLink 
+            className="dropdown-item" 
+            to="/admin" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            
+          >
+            Manage GV
+          </NavLink>
           )}
-          <NavLink className="dropdown-item" onClick={handleFavorites} to={"/favorites"}>
-            Favorites Course
+          
+          {userLogin.user.Role === "hocvien" && (
+          <NavLink className="dropdown-item" onClick={handleFavorites} to={"/Courses-List"}>
+            Courses List
           </NavLink>
-          <NavLink className="dropdown-item" onClick={handleFavorites} to={"/giangvien"}>
-            Favorites Teacher
-          </NavLink>
+          )}
+
+            {userLogin.user.Role === "giangvien" && (
+              <NavLink 
+                className="dropdown-item" 
+                to="/admin" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                
+              >
+                Manage GV
+              </NavLink>
+            )}
+
           <NavLink className="dropdown-item" onClick={handleLogOut} to={"/"}>
             Log Out
           </NavLink>
