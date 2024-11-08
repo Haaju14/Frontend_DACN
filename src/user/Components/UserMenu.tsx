@@ -29,7 +29,9 @@ const UserMenu: React.FC = () => {
   const handleFavorites = () =>{
     navigate("/favorites");
   };
- 
+  const handlePayment = () => {
+    navigate("/Payment");
+  }
 
   const handleTabSwitch = (tab: "login" | "register") => {
     const targetTab = document.querySelector(`#${tab}-tab`) as HTMLAnchorElement;
@@ -43,7 +45,9 @@ const UserMenu: React.FC = () => {
           <NavLink className="dropdown-item" onClick={handleManage} to={"/user/profile"}>
             Account Information
           </NavLink>
-
+          <NavLink className="dropdown-item" onClick={handlePayment}to={"/Payment"}> 
+          Payment
+          </NavLink>
           {userLogin.user.Role === "admin" && (
             <NavLink 
             className="dropdown-item" 

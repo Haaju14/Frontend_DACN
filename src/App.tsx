@@ -22,6 +22,7 @@ import CoursesListPage from "./user/Pages/CoursesListPage.tsx";
 import SearchUserPage from "./user/Pages/SearchUserPage.tsx";
 import TeacherDetailPage from "./user/Pages/TeacherDetailPage.tsx";
 import ManageCourses from "./admin/ManageCourses/ManageCourses.tsx";
+import Payment from "./user/Pages/Payment.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -57,6 +58,9 @@ function App() {
             </Route>
             <Route
             path="/SearchUser" element={<SearchUserPage/>}>
+            </Route>
+            <Route
+            path="/Payment" element={<Payment/>}>  
             </Route>
           </Route>
           <Route

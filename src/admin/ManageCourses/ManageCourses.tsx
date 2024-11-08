@@ -13,9 +13,9 @@ const ManageCourses: React.FC = () => {
     const [editCourse, setEditCourse] = useState<any>(null);
     const [form] = Form.useForm();
 
-    // Giả sử bạn đã có danh sách danh mục và khuyến mãi
-    const [categories, setCategories] = useState<any[]>([]); // Lấy dữ liệu danh mục
-    const [discounts, setDiscounts] = useState<any[]>([]); // Lấy dữ liệu khuyến mãi
+    
+    const [categories, setCategories] = useState<any[]>([]); 
+    const [discounts, setDiscounts] = useState<any[]>([]); 
 
     useEffect(() => {
         fetchCourses();
@@ -43,8 +43,8 @@ const ManageCourses: React.FC = () => {
         }
     };
 
-    const fetchDiscounts = async () => {
-        try {
+    const fetchDiscounts = async () => {      
+        try {           
             const { data } = await axios.get(`${BASE_URL}/khuyenmai/all`);
             setDiscounts(data.content);
         } catch (error) {
@@ -69,7 +69,7 @@ const ManageCourses: React.FC = () => {
         try {
             await axios.delete(`${BASE_URL}/khoa-hoc/delete/${id}`);
             message.success("Xóa khóa học thành công.");
-            fetchCourses(); // Reload courses after delete
+            fetchCourses(); 
         } catch (error) {
             console.error("Error deleting course:", error);
             message.error("Có lỗi xảy ra khi xóa khóa học.");
@@ -85,11 +85,11 @@ const ManageCourses: React.FC = () => {
 
             const courseData = {
                 ...values,
-                NgayGuiKiemDuyet: currentDate, // Thêm ngày gửi kiểm duyệt
-                TrangThai: 'chua_duyet', // Trạng thái mặc định là chưa duyệt
-                IDNguoiDung: 1, // Lấy ID người dùng từ thông tin đăng nhập (giả sử là 1)
-                LuotXem: 0, // Số lượt xem mặc định là 0
-                SoLuongHocVien: 0, // Số lượng học viên mặc định là 0
+                NgayGuiKiemDuyet: currentDate, 
+                TrangThai: 'chua_duyet', 
+                IDNguoiDung: 1, 
+                LuotXem: 0, 
+                SoLuongHocVien: 0, 
             };
 
             // Kiểm tra token từ localStorage
@@ -102,7 +102,7 @@ const ManageCourses: React.FC = () => {
 
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // Thêm token vào header Authorization
+                    Authorization: `Bearer ${token}`,  
                 },
             };
 
