@@ -23,6 +23,8 @@ import SearchUserPage from "./user/Pages/SearchUserPage.tsx";
 import TeacherDetailPage from "./user/Pages/TeacherDetailPage.tsx";
 import ManageCourses from "./admin/ManageCourses/ManageCourses.tsx";
 import Payment from "./user/Pages/Payment.tsx";
+import Followers from "./admin/ManageFollowers/Followers.tsx";
+import ManageUser from "./admin/ManageUser/ManageUser.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -71,6 +73,8 @@ function App() {
             <Route path="/admin" element={<AdminTemplate />}>
               
               <Route path="Manage-Course" element={<ManageCourses />} />
+              <Route path="Manage-User" element={<ManageUser />} />
+              <Route path="Manage-Followers" element={<Followers/>} />
             </Route>
 
           404 Route  

@@ -192,3 +192,24 @@ export const getCommentIdCourse = async (id:number, token: string) => {
   });
   return response.data;
 }
+// API lấy danh sách học viên đã đăng ký khóa học
+export const getRegisteredStudents = async (userId:any) => {
+  try {
+      const response = await axios.get(`/khoa-hoc-dang-ky/hocvien/${userId}`);
+      return response.data;
+  } catch (error) {
+      console.error("Lỗi khi lấy danh sách học viên:", error);
+      throw error;
+  }
+};
+
+// API thống kê số lượt đăng ký cho khóa học
+export const getRegistrationCount = async (courseId:any) => {
+  try {
+      const response = await axios.get(`/khoa-hoc-dang-ky/thong-ke/${courseId}`);
+      return response.data;
+  } catch (error) {
+      console.error("Lỗi khi thống kê số lượt đăng ký:", error);
+      throw error;
+  }
+};

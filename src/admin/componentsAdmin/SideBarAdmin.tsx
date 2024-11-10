@@ -30,31 +30,41 @@ const SideBarAdmin: React.FC = () => {
       <div className="sidebar-wrapper scrollbar scrollbar-inner">
         <div className="sidebar-content">
           <ul className="nav nav-secondary">
-            <li className="nav-item">
-              <a
-                data-bs-toggle="collapse"
-                onClick={() => {
-                  navigate("/admin/table-user");
-                }}
-              >
-                <i className="fas fa-layer-group" />
-                <p>Manage User</p>
-              </a>
-            </li>
-            
-            <li className="nav-item">
-              <a
-                data-bs-toggle="collapse"
-                onClick={() => {
-                  navigate("/admin/Manage-Course");
-                }}
+          <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-User"
+                className="nav-link"
+                
               >
                 <i className="fas fa-pen-square" />
-                <p>Manage Course</p>
-              </a>
+                <p>Manage Users</p>
+              </NavLink>
             </li>
             
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Course"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage Courses</p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Followers"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage Followers</p>
+              </NavLink>
+            </li>
+
             
+
           </ul>
         </div>
       </div>

@@ -45,18 +45,21 @@ const UserMenu: React.FC = () => {
           <NavLink className="dropdown-item" onClick={handleManage} to={"/user/profile"}>
             Account Information
           </NavLink>
+
+          {userLogin.user.Role === "hocvien" && (
           <NavLink className="dropdown-item" onClick={handlePayment}to={"/Payment"}> 
           Payment
           </NavLink>
+          )}
+
           {userLogin.user.Role === "admin" && (
             <NavLink 
             className="dropdown-item" 
             to="/admin" 
             target="_blank" 
             rel="noopener noreferrer"
-            
           >
-            Manage GV
+            Manage 
           </NavLink>
           )}
           
@@ -74,7 +77,7 @@ const UserMenu: React.FC = () => {
                 rel="noopener noreferrer"
                 
               >
-                Manage GV
+                Manage 
               </NavLink>
             )}
 
