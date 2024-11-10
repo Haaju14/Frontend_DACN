@@ -58,7 +58,10 @@ const ManageStudents: React.FC = () => {
                                 ) : (
                                     <WomanOutlined className="icon" />
                                 )}
-                                <span className="info-label">Giới tính:</span> {student.GioiTinh || "Chưa xác định"}
+                                <span className="info-label">Giới tính:</span> {student.GioiTinh || "Chưa xác định"}                                
+                            </div>
+                            <div>
+                            <span className="info-label">Role:</span> {student.Role}
                             </div>
                         </Card>
                     ))

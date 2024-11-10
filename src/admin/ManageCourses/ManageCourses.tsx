@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { message, Modal, Form, Button, Card } from "antd";
+import { message, Modal, Form, Button, Card, Input, Select } from "antd";
 import { DeleteOutlined, EditOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { BASE_URL } from "../../util/fetchfromAPI";
 import "../../../public/admin/css/ManageCourse.css";
@@ -97,7 +97,7 @@ const ManageCourses: React.FC = () => {
             setIsStudentModalVisible(true);
         } catch (error) {
             console.error("Error fetching students for course:", error);
-            message.error("Không thể lấy danh sách học viên.");
+            message.error("Không có học viên nào đăng ký !!!.");
         }
     };
 
@@ -243,7 +243,87 @@ const ManageCourses: React.FC = () => {
                     wrapperCol={{ span: 18 }}
                     layout="horizontal"
                 >
-                    {/* Các Form.Item cho khóa học */}
+                    <Form.Item
+                        label="Tên khóa học"
+                        name="TenKhoaHoc"
+                        rules={[{ required: true, message: "Vui lòng nhập tên khóa học!" }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Mô tả khóa học"
+                        name="MoTaKhoaHoc"
+                        rules={[{ required: true, message: "Vui lòng nhập mô tả khóa học!" }]}>
+                        <Input.TextArea />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Giá"
+                        name="GiaTien"
+                        rules={[{ required: true, message: "Vui lòng nhập giá!" }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Giảm giá"
+                        name="GiamGia"
+                        rules={[{ required: true, message: "Vui lòng nhập mức giảm giá!" }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Loại khóa học"
+                        name="LoaiKhoaHoc"
+                        rules={[{ required: true, message: "Vui lòng chọn loại khóa học!" }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Danh mục"
+                        name="IDDanhMuc"
+                        rules={[{ required: true, message: "Vui lòng chọn danh mục!" }]}>
+                        <Select>
+                            {categories.map(category => (
+                                <Option key={category.IDDanhMuc} value={category.IDDanhMuc}>
+                                    {category.TenDanhMuc}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Khuyến mãi"
+                        name="IDKhuyenMai"
+                        rules={[{ required: true, message: "Vui lòng chọn khuyến mãi!" }]}>
+                        <Select>
+                            {discounts.map(discount => (
+                                <Option key={discount.IDKhuyenMai} value={discount.IDKhuyenMai}>
+                                    {discount.TenKhuyenMai}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Hình ảnh"
+                        name="HinhAnh"
+                        rules={[{ required: true, message: "Vui lòng nhập URL hình ảnh!" }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Số lượng học viên"
+                        name="SoLuongHocVien"
+                        rules={[{ required: true, message: "Vui lòng nhập số lượng học viên!" }]}>
+                        <Input type="number" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Lượt xem"
+                        name="LuotXem"
+                        rules={[{ required: true, message: "Vui lòng nhập số lượt xem!" }]}>
+                        <Input type="number" />
+                    </Form.Item>
                 </Form>
             </Modal>
 
