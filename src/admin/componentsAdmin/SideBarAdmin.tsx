@@ -63,7 +63,49 @@ const SideBarAdmin: React.FC = () => {
               </NavLink>
             </li>
 
-            
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Black-List"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage BlackList</p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Block-List"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage BlockList</p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Comment"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage Comment</p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink
+                to="/admin/Manage-Censor"
+                className="nav-link"
+                
+              >
+                <i className="fas fa-pen-square" />
+                <p>Manage Censor</p>
+              </NavLink>
+            </li>
 
           </ul>
         </div>

@@ -25,6 +25,10 @@ import ManageCourses from "./admin/ManageCourses/ManageCourses.tsx";
 import Payment from "./user/Pages/Payment.tsx";
 import Followers from "./admin/ManageFollowers/Followers.tsx";
 import ManageUser from "./admin/ManageUser/ManageUser.tsx";
+import BlackList from "./admin/ManageBlackList/BlackList.tsx";
+import BlockList from "./admin/ManageBlockList/BlockList.tsx";
+import ManageComment from "./admin/ManageComment/ManageComment.tsx";
+import Censor from "./admin/CensorCourse/Censor.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -75,6 +79,11 @@ function App() {
               <Route path="Manage-Course" element={<ManageCourses />} />
               <Route path="Manage-User" element={<ManageUser />} />
               <Route path="Manage-Followers" element={<Followers/>} />
+              <Route path="Manage-Black-List" element={<BlackList/>} />
+              <Route path="Manage-Block-List" element={<BlockList/>} />
+              <Route path="Manage-Comment" element={<ManageComment/>} />
+              <Route path="Manage-Censor" element={<Censor/>} />
+              
             </Route>
 
           404 Route  
