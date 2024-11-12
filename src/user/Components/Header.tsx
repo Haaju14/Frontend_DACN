@@ -3,16 +3,18 @@ import Login from "./Login";
 import Register from "./Register";
 import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword
 import UserMenu from "./UserMenu";
-import { NavLink } from "react-router-dom";
-const Header: React.FC = () => {
+import { NavLink, useNavigate } from "react-router-dom";
+import { ShoppingCartOutlined } from "@ant-design/icons"; // Import icon giỏ hàng
 
+const Header: React.FC = () => {
   const [activeTab, setActiveTab] = useState("login"); // State để quản lý tab hiện tại
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const handleForgotPasswordClick = () => {
     setActiveTab("forgot-password"); // Chuyển sang tab quên mật khẩu
   };
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchToggle = () => {
     setSearchOpen(!searchOpen); // Toggle mở hộp tìm kiếm
@@ -25,6 +27,11 @@ const Header: React.FC = () => {
       setSearchTerm(""); // Reset trường tìm kiếm
     }
   };
+
+  const handleCartClick = () => {
+    navigate("/Cart"); // Điều hướng đến trang giỏ hàng
+  };
+
   return (
     <>
       <nav
@@ -69,13 +76,20 @@ const Header: React.FC = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/SearchUser" className="nav-link">
+                <NavLink to="/Teacher" className="nav-link">
                   Teacher
                 </NavLink>
               </li>
               <li className="nav-item d-flex align-items-center">
+                <ShoppingCartOutlined
+                  onClick={handleCartClick}
+                  style={{ fontSize: "24px", color: "white", cursor: "pointer" }}
+                />
+              </li>
+              <li className="nav-item d-flex align-items-center">
                 <UserMenu />
               </li>
+              
             </ul>
           </div>
         </div>
@@ -139,7 +153,6 @@ const Header: React.FC = () => {
                   aria-labelledby="login-tab"
                 >
                   <Login />
-                  {/* Nút "Quên mật khẩu?" chỉ hiện ở tab Login */}
                   <div className="text-right mt-2">
                     <NavLink to="#" onClick={handleForgotPasswordClick} className="text-primary">
                       Quên mật khẩu?

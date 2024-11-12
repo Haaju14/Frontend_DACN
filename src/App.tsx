@@ -22,13 +22,15 @@ import CoursesListPage from "./user/Pages/CoursesListPage.tsx";
 import SearchUserPage from "./user/Pages/SearchUserPage.tsx";
 import TeacherDetailPage from "./user/Pages/TeacherDetailPage.tsx";
 import ManageCourses from "./admin/ManageCourses/ManageCourses.tsx";
-import Payment from "./user/Pages/Payment.tsx";
+import Payment from "./user/Pages/PaymentPage.tsx";
 import Followers from "./admin/ManageFollowers/Followers.tsx";
 import ManageUser from "./admin/ManageUser/ManageUser.tsx";
 import BlackList from "./admin/ManageBlackList/BlackList.tsx";
 import BlockList from "./admin/ManageBlockList/BlockList.tsx";
 import ManageComment from "./admin/ManageComment/ManageComment.tsx";
 import Censor from "./admin/CensorCourse/Censor.tsx";
+import PaymentPage from "./user/Pages/PaymentPage.tsx";
+import CartPage from "./user/Pages/CartPage.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -63,10 +65,13 @@ function App() {
               path="/Courses-List" element={<CoursesListPage/>} >
             </Route>
             <Route
-            path="/SearchUser" element={<SearchUserPage/>}>
+            path="/Teacher" element={<SearchUserPage/>}>
             </Route>
             <Route
-            path="/Payment" element={<Payment/>}>  
+            path="/Payment" element={<PaymentPage/>}>  
+            </Route>
+            <Route
+            path="/Cart" element={<CartPage/>}>  
             </Route>
           </Route>
           <Route

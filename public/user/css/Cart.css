@@ -1,0 +1,76 @@
+/* Đảm bảo bảng giỏ hàng nằm giữa */
+.cart-container {
+  max-width: 1200px; /* Tùy chỉnh theo nhu cầu */
+  margin: 0 auto; /* Căn giữa bảng */
+  padding: 20px;
+}
+
+/* Tiêu đề giỏ hàng */
+.cart-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr; /* Giữ cấu trúc cột */
+  padding: 10px;
+  background-color: #f1f1f1;
+  font-weight: bold;
+  text-align: center;
+  justify-items: center; /* Căn giữa các phần tử trong grid */
+}
+
+/* Các mục trong giỏ hàng */
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr; /* Đảm bảo cấu trúc cột cho sản phẩm */
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  text-align: center; /* Căn giữa văn bản trong các ô */
+}
+
+/* Cột "Sản phẩm" */
+.cart-item .product-info {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Căn giữa các phần tử trong "Sản phẩm" */
+}
+
+.cart-item .product-info img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Cột "Thao tác" căn bên phải */
+.cart-item .action {
+  justify-self: center;
+  margin-left: center; /* Đẩy về bên phải */
+}
+
+/* Footer giỏ hàng */
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center; /* Căn giữa tổng tiền */
+}
+
+.cart-footer .total {
+  color: #ff5722;
+}
+
+.cart-footer button {
+  background-color: #ff5722;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.cart-footer button:hover {
+  background-color: #e64a19;
+}

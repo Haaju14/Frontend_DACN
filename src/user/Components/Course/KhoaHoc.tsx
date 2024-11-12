@@ -6,7 +6,7 @@ import { BASE_URL } from "../../../util/fetchfromAPI";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
-import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { HeartOutlined, HeartFilled, ShoppingCartOutlined } from "@ant-design/icons";
 
 interface KhoaHocData {
     IDKhoaHoc: number;
@@ -117,6 +117,23 @@ const KhoaHocComponent: React.FC = () => {
             }
         }
     };
+    // hàm thêm khóa học vào giỏ hàng
+    const addToCart = async (id: number) => {
+        try {
+            const token = localStorage.getItem("token");
+            await axios.post(
+                `${BASE_URL}/don-hang/add/${id}`, // Thêm IDKhoaHoc vào URL
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            message.success("Đã thêm khóa học vào giỏ hàng.");
+        } catch (error) {
+            console.error("Error adding course to cart:", error);
+            message.error("Có lỗi xảy ra khi thêm vào giỏ hàng.");
+        }
+    };
+    
+
 
     if (isLoading || isLoadingFavorites) {
         return <Loading />;
@@ -134,6 +151,7 @@ const KhoaHocComponent: React.FC = () => {
             (!showFavoriteOnly || favoriteCourses.includes(KhoaHoc.IDKhoaHoc)) // Điều kiện tìm kiếm khóa học yêu thích
         );
     });
+
 
     return (
         <section className="ftco-section bg-light">
@@ -232,6 +250,12 @@ const KhoaHocComponent: React.FC = () => {
                                                 >
                                                     Xem chi tiết
                                                 </button>
+                                                <span
+                                                    onClick={() => addToCart(KhoaHoc.IDKhoaHoc)}
+                                                    style={{ cursor: "pointer", fontSize: "24px", marginRight: "10px" }}
+                                                >
+                                                    <ShoppingCartOutlined />
+                                                </span>
                                                 <span
                                                     onClick={() => toggleFavoritesCourseAPI(KhoaHoc.IDKhoaHoc)}
                                                     style={{ cursor: "pointer", fontSize: "24px" }}
