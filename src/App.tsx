@@ -31,6 +31,8 @@ import ManageComment from "./admin/ManageComment/ManageComment.tsx";
 import Censor from "./admin/CensorCourse/Censor.tsx";
 import PaymentPage from "./user/Pages/PaymentPage.tsx";
 import CartPage from "./user/Pages/CartPage.tsx";
+import Category from "./admin/ManageCategory/Category.tsx";
+import Promotion from "./admin/ManagePromotion/Promotion.tsx";
 
 export const routeLink: any = createBrowserHistory();
 
@@ -88,6 +90,8 @@ function App() {
               <Route path="Manage-Block-List" element={<BlockList/>} />
               <Route path="Manage-Comment" element={<ManageComment/>} />
               <Route path="Manage-Censor" element={<Censor/>} />
+              <Route path="Manage-Category" element={<Category/>} />
+              <Route path="Manage-Promotion" element={<Promotion/>} />
               
             </Route>
 
