@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@tanstack/react-query": "^5.51.23",

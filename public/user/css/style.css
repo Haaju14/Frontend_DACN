@@ -12357,5 +12357,117 @@ textarea.form-control {
   background-size: cover;
   background-position: center;
 }
-/*------------------------------------------Manage Course ------------------------------ */
+/*------------------------------------------ChatBox ------------------------------ */
+.chatbox-container {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbox-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.chatbox-content {
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chatbox-header {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.chatbox-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.chatbox-body {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chatbox-messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatbox-message {
+  margin-bottom: 10px;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  max-width: 70%;
+}
+
+.support-message {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 15px;
+  max-width: 70%;
+}
+
+.chatbox-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chatbox-input input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  outline: none;
+}
+
+.chatbox-input button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+
+
+
 
