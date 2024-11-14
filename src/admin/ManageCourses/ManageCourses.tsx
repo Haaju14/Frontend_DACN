@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { message, Modal, Form, Button, Card, Input, Select } from "antd";
+import { message, Modal, Form, Button, Card, Input, Select, Pagination } from "antd";
 import { DeleteOutlined, EditOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { BASE_URL } from "../../util/fetchfromAPI";
 import "../../../public/admin/css/ManageCourse.css";
@@ -17,6 +17,11 @@ const ManageCourses: React.FC = () => {
     const [students, setStudents] = useState<any[]>([]); // State lưu danh sách học viên của khóa học
     const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false); // State mở modal danh sách học viên
     const [registrationCount, setRegistrationCount] = useState<number>(0); // State lưu số lượt đăng ký
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 5;
+    const [totalCourses, setTotalCourses] = useState(0);
+    
 
     useEffect(() => {
         fetchCourses();
@@ -26,8 +31,14 @@ const ManageCourses: React.FC = () => {
 
     const fetchCourses = async () => {
         try {
-            const { data } = await axios.get(`${BASE_URL}/khoa-hoc`);
+            const { data } = await axios.get(`${BASE_URL}/khoa-hoc`, {
+                params: {
+                    page: currentPage - 1,  // API yêu cầu trang bắt đầu từ 0
+                    size: pageSize
+                }
+            });
             setCourses(data.content);
+            setTotalCourses(data.totalElements);
         } catch (error) {
             console.error("Error fetching courses:", error);
             message.error("Có lỗi xảy ra khi tải danh sách khóa học.");
@@ -193,7 +204,10 @@ const ManageCourses: React.FC = () => {
     const handleStudentModalCancel = () => {
         setIsStudentModalVisible(false);
     };
-
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+    
     return (
         <div className="manage-courses-container">
             <h1>Quản lý khóa học</h1>
@@ -223,11 +237,19 @@ const ManageCourses: React.FC = () => {
                             >
                                 Xem danh sách học viên
                             </Button>
+                            
                         </div>
                     </div>
                 ))}
             </div>
-
+            {/* Pagination */}
+            <Pagination
+                            current={currentPage}
+                            pageSize={pageSize}
+                            total={totalCourses}
+                            onChange={handlePageChange}
+                            style={{ marginTop: "20px", textAlign: "center" }}
+                />
             {/* Modal Thêm/Sửa khóa học */}
             <Modal
                 title={editCourse ? "Sửa khóa học" : "Thêm khóa học"}

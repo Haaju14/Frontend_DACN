@@ -20,13 +20,6 @@ const SideBar: React.FC = () => {
             </li>
 
             <li className="nav-item">
-              <NavLink to="/admin/Manage-Course" className="nav-link">
-                <i className="fas fa-book" />
-                <p>Manage Courses</p>
-              </NavLink>
-            </li>
-
-            <li className="nav-item">
               <NavLink to="/admin/Manage-Black-List" className="nav-link">
                 <i className="fas fa-ban" />
                 <p>Manage BlackList</p>

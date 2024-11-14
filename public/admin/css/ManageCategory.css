@@ -1,0 +1,97 @@
+/* ManageCategories.css */
+.manage-categories-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.manage-categories-container h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Đổi từ flex sang grid layout để hiển thị danh mục giống khuyến mãi */
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 cột */
+    gap: 10px;
+}
+
+.category-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.3s;
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-details h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.category-details p {
+    color: #666;
+    margin: 5px 0;
+}
+
+.category-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.category-actions .ant-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.category-actions .ant-btn-eye {
+    background-color: #1890ff;
+    color: #fff;
+}
+
+.category-actions .category-edit-button {
+    background-color: #1890ff;
+    color: #fff;
+}
+
+.category-actions .category-edit-button:hover {
+    background-color: #40a9ff;
+}
+
+.category-actions .category-delete-button {
+    background-color: #ff4d4f;
+    color: #fff;
+}
+
+.category-actions .category-delete-button:hover {
+    background-color: #ff7875;
+}
+
+/* Modal customization */
+.ant-modal {
+    border-radius: 8px;
+}
+
+.ant-modal-title {
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+}
+
+.ant-modal-footer {
+    display: flex;
+    justify-content: center;
+}
